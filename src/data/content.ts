@@ -398,8 +398,98 @@ export const content: Section[] = [
     },
     {
         id: '9',
+        slug: 'context-window-crash',
+        title: '9. The Context Window Crash',
+        blocks: [
+            { type: 'p', text: "Every developer eventually hits the wall: you've been vibe coding for 4 hours, and suddenly your AI agent hallucinates that your core `layout.tsx` file is missing, or it starts outputting code that contradicts things it just wrote." },
+            { type: 'callout', variant: 'skull', text: 'This is the context window crash. You dumped too many files, too many iterations, and too much history into an LLM, and its attention mechanism completely collapsed.' },
+            { type: 'h2', text: 'How to Prevent It' },
+            { type: 'p', text: "The solution is not 'buy a bigger context window.' Even models with 2-million token limits suffer from degraded recall when they are stuffed with irrelevant code. The solution is modularity and scope discipline." },
+            {
+                type: 'ul', items: [
+                    'Keep your components under 200 lines. If it grows bigger, the AI will struggle to edit it cleanly.',
+                    'Use the `-c` flag or clear your chat history the second a feature is finished. Never carry old context into a new sprint.',
+                    'Only load the files strictly necessary for the current task into the agent. Do not let it read the whole repository for a CSS change.'
+                ]
+            }
+        ]
+    },
+    {
+        id: '10',
+        slug: 'database-migrations',
+        title: '10. Database Migrations on Auto-Pilot',
+        blocks: [
+            { type: 'p', text: "Letting an AI agent write your frontend is high-leverage and low-risk. Letting an AI agent run `ALTER TABLE` scripts across your production Supabase database is terrifying." },
+            { type: 'p', text: "Agents do not understand the consequences of dropping a column or restructuring a relationship. If you tell an AI to 'fix the database so saving works', it might happily drop a table and recreate it, wiping 10,000 user records." },
+            { type: 'callout', variant: 'zap', text: 'Never let an AI directly execute a migration script. Always use an approval flag and review the raw SQL before it runs.' },
+            { type: 'h2', text: 'The Safe Data Workflow' },
+            { type: 'p', text: "When you need a schema change, prompt the AI to generate a `.sql` file but explicitly forbid it from running it. Then, review the script yourself, looking for destructive commands like `DROP` or data truncation. Once verified, run the migration manually via the Supabase Dashboard SQL editor." }
+        ]
+    },
+    {
+        id: '11',
+        slug: 'beating-generic-ai-look',
+        title: '11. Beating the Generic AI Look',
+        blocks: [
+            { type: 'p', text: "You know an AI built a site the second you see it: `bg-blue-500`, standard pill buttons, generic box shadows, and Arial font. It's the 'Tailwind Default' aesthetic, and it screams low-effort." },
+            { type: 'h2', text: 'Forcing Premium Aesthetics' },
+            { type: 'p', text: "To break the AI out of this trap, you must inject hardcore design constraints into your system prompts or `.cursorrules`." },
+            {
+                type: 'ul', items: [
+                    'Ban standard colors. Tell the AI `NEVER use standard tailwind colors like blue-500 or red-400. ONLY use Zinc, Slate, Neutral, and custom hex codes.`',
+                    'Force Glassmorphism: Instruct the agent to use `backdrop-blur-md bg-white/5` instead of solid backgrounds for cards.',
+                    'Micro-interactions: Always tell the AI to wrap interactive elements in `transition-all duration-300 active:scale-95`.'
+                ]
+            },
+            { type: 'callout', variant: 'fire', text: 'This is why the AGENTS.md file in the root of this repo explicitly bans boring UI. You set the rules once, and the AI follows them forever.' }
+        ]
+    },
+    {
+        id: '12',
+        slug: 'securing-stripe',
+        title: '12. Securing Stripe & Webhooks',
+        blocks: [
+            { type: 'p', text: "Agents are incredible at wiring up a Stripe Checkout session. They are terrible at securing the resulting webhooks. AI loves to take shortcuts, which often means trusting the client to confirm payment instead of verifying cryptographic signatures." },
+            { type: 'h2', text: 'The Danger Zone' },
+            { type: 'p', text: "A common AI mistake is writing a `POST` route that accepts `req.body.status === 'succeeded'` and immediately upgrades a user in the database. Anyone can hit that endpoint with Postman and get your premium tier for free." },
+            { type: 'callout', variant: 'zap', text: 'When prompting for payment logic, be explicitly paranoid: "Write a Stripe webhook handler. You MUST verify the Stripe-Signature header using the endpoint secret. Do not trust the raw payload."' }
+        ]
+    },
+    {
+        id: '13',
+        slug: 'hallucinated-apis',
+        title: '13. Handling Hallucinated APIs',
+        blocks: [
+            { type: 'p', text: "You ask an AI to fetch data from a third-party service. It writes a beautifully typed, concurrent fetching function using `/v3/api/advanced-endpoint`. You run it. 404 Not Found. You check the docs. That endpoint does not exist. It never existed." },
+            { type: 'p', text: "AI models are trained on internet data up to a cutoff point, and when they do not know the exact route, they confidently guess what the route *should* be based on REST conventions." },
+            { type: 'h2', text: 'The "Verify Docs First" Protocol' },
+            { type: 'p', text: "Before you ask an agent to integrate a tool like Resend, loops, or a random API — feed it the docs first. Use a command like `Fetch https://resend.com/docs/api-reference/emails/send-email and base your code strictly on this schema.`" },
+            { type: 'callout', variant: 'idea', text: 'If an API is hallucinating, force the agent to use `curl` from its terminal to hit the endpoint and read the error message so it naturally corrects itself.' }
+        ]
+    },
+    {
+        id: '14',
+        slug: 'scale-vs-speed',
+        title: '14. Prompting for Scale vs Speed',
+        blocks: [
+            { type: 'p', text: "If you tell an AI `Build a working chat app`, it will stuff the database logic, the frontend UI, the state management, and the API calls into one gigantic monolithic 800-line `page.tsx` file." },
+            { type: 'callout', variant: 'skull', text: 'Speed prompting gets you a prototype. Scale prompting gets you a product.' },
+            { type: 'p', text: "To build something that lasts longer than the weekend, you must force the AI to execute sequentially:" },
+            {
+                type: 'ol', items: [
+                    'First, define the strictly typed interfaces in `types.ts`.',
+                    'Second, scaffold the blank UI components so they compile visually.',
+                    'Third, write the isolated database access logic.',
+                    'Fourth, wire the state and components together.'
+                ]
+            },
+            { type: 'p', text: "By breaking the prompt down, you force the AI to generate a clean, modular architecture that you can actually maintain." }
+        ]
+    },
+    {
+        id: '15',
         slug: 'mistakes-i-made',
-        title: '9. Mistakes I Made',
+        title: '15. Mistakes I Made',
         blocks: [
             { type: 'p', text: "This is the section I wish had existed when I started. Everything here is something I actually did wrong, wasted real time on, or had to learn the hard way. No made up cautionary tales. Real mistakes from real projects." },
             { type: 'callout', variant: 'skull', text: 'Reading this section and ignoring it is the most expensive thing you can do. Every mistake here cost me anywhere from a few hours to a few weeks. You have been warned.' },
@@ -441,9 +531,9 @@ export const content: Section[] = [
         ]
     },
     {
-        id: '10',
+        id: '16',
         slug: 'resources',
-        title: '10. Resources',
+        title: '16. Resources',
         blocks: [
             { type: 'p', text: "Everything I actually use, read, watch, and reference. No filler. If it is on this list I have personally used it and found it valuable. If I stopped using something I removed it." },
             { type: 'callout', variant: 'idea', text: 'Do not try to consume all of this at once. Bookmark it and come back when you need something specific. The best resource is always the one that solves the problem you have right now.' },
@@ -524,94 +614,5 @@ export const content: Section[] = [
             { type: 'callout', variant: 'fire', text: 'Everything in here means nothing if you do not ship. Close this, open your editor, and build something. That is the only thing that actually matters.' },
         ]
     },
-    {
-        id: '11',
-        slug: 'context-window-crash',
-        title: '11. The Context Window Crash',
-        blocks: [
-            { type: 'p', text: "Every developer eventually hits the wall: you've been vibe coding for 4 hours, and suddenly your AI agent hallucinates that your core `layout.tsx` file is missing, or it starts outputting code that contradicts things it just wrote." },
-            { type: 'callout', variant: 'skull', text: 'This is the context window crash. You dumped too many files, too many iterations, and too much history into an LLM, and its attention mechanism completely collapsed.' },
-            { type: 'h2', text: 'How to Prevent It' },
-            { type: 'p', text: "The solution is not 'buy a bigger context window.' Even models with 2-million token limits suffer from degraded recall when they are stuffed with irrelevant code. The solution is modularity and scope discipline." },
-            {
-                type: 'ul', items: [
-                    'Keep your components under 200 lines. If it grows bigger, the AI will struggle to edit it cleanly.',
-                    'Use the `-c` flag or clear your chat history the second a feature is finished. Never carry old context into a new sprint.',
-                    'Only load the files strictly necessary for the current task into the agent. Do not let it read the whole repository for a CSS change.'
-                ]
-            }
-        ]
-    },
-    {
-        id: '12',
-        slug: 'database-migrations',
-        title: '12. Database Migrations on Auto-Pilot',
-        blocks: [
-            { type: 'p', text: "Letting an AI agent write your frontend is high-leverage and low-risk. Letting an AI agent run `ALTER TABLE` scripts across your production Supabase database is terrifying." },
-            { type: 'p', text: "Agents do not understand the consequences of dropping a column or restructuring a relationship. If you tell an AI to 'fix the database so saving works', it might happily drop a table and recreate it, wiping 10,000 user records." },
-            { type: 'callout', variant: 'zap', text: 'Never let an AI directly execute a migration script. Always use an approval flag and review the raw SQL before it runs.' },
-            { type: 'h2', text: 'The Safe Data Workflow' },
-            { type: 'p', text: "When you need a schema change, prompt the AI to generate a `.sql` file but explicitly forbid it from running it. Then, review the script yourself, looking for destructive commands like `DROP` or data truncation. Once verified, run the migration manually via the Supabase Dashboard SQL editor." }
-        ]
-    },
-    {
-        id: '13',
-        slug: 'beating-generic-ai-look',
-        title: '13. Beating the Generic AI Look',
-        blocks: [
-            { type: 'p', text: "You know an AI built a site the second you see it: `bg-blue-500`, standard pill buttons, generic box shadows, and Arial font. It's the 'Tailwind Default' aesthetic, and it screams low-effort." },
-            { type: 'h2', text: 'Forcing Premium Aesthetics' },
-            { type: 'p', text: "To break the AI out of this trap, you must inject hardcore design constraints into your system prompts or `.cursorrules`." },
-            {
-                type: 'ul', items: [
-                    'Ban standard colors. Tell the AI `NEVER use standard tailwind colors like blue-500 or red-400. ONLY use Zinc, Slate, Neutral, and custom hex codes.`',
-                    'Force Glassmorphism: Instruct the agent to use `backdrop-blur-md bg-white/5` instead of solid backgrounds for cards.',
-                    'Micro-interactions: Always tell the AI to wrap interactive elements in `transition-all duration-300 active:scale-95`.'
-                ]
-            },
-            { type: 'callout', variant: 'fire', text: 'This is why the AGENTS.md file in the root of this repo explicitly bans boring UI. You set the rules once, and the AI follows them forever.' }
-        ]
-    },
-    {
-        id: '14',
-        slug: 'securing-stripe',
-        title: '14. Securing Stripe & Webhooks',
-        blocks: [
-            { type: 'p', text: "Agents are incredible at wiring up a Stripe Checkout session. They are terrible at securing the resulting webhooks. AI loves to take shortcuts, which often means trusting the client to confirm payment instead of verifying cryptographic signatures." },
-            { type: 'h2', text: 'The Danger Zone' },
-            { type: 'p', text: "A common AI mistake is writing a `POST` route that accepts `req.body.status === 'succeeded'` and immediately upgrades a user in the database. Anyone can hit that endpoint with Postman and get your premium tier for free." },
-            { type: 'callout', variant: 'zap', text: 'When prompting for payment logic, be explicitly paranoid: "Write a Stripe webhook handler. You MUST verify the Stripe-Signature header using the endpoint secret. Do not trust the raw payload."' }
-        ]
-    },
-    {
-        id: '15',
-        slug: 'hallucinated-apis',
-        title: '15. Handling Hallucinated APIs',
-        blocks: [
-            { type: 'p', text: "You ask an AI to fetch data from a third-party service. It writes a beautifully typed, concurrent fetching function using `/v3/api/advanced-endpoint`. You run it. 404 Not Found. You check the docs. That endpoint does not exist. It never existed." },
-            { type: 'p', text: "AI models are trained on internet data up to a cutoff point, and when they do not know the exact route, they confidently guess what the route *should* be based on REST conventions." },
-            { type: 'h2', text: 'The "Verify Docs First" Protocol' },
-            { type: 'p', text: "Before you ask an agent to integrate a tool like Resend, loops, or a random API — feed it the docs first. Use a command like `Fetch https://resend.com/docs/api-reference/emails/send-email and base your code strictly on this schema.`" },
-            { type: 'callout', variant: 'idea', text: 'If an API is hallucinating, force the agent to use `curl` from its terminal to hit the endpoint and read the error message so it naturally corrects itself.' }
-        ]
-    },
-    {
-        id: '16',
-        slug: 'scale-vs-speed',
-        title: '16. Prompting for Scale vs Speed',
-        blocks: [
-            { type: 'p', text: "If you tell an AI `Build a working chat app`, it will stuff the database logic, the frontend UI, the state management, and the API calls into one gigantic monolithic 800-line `page.tsx` file." },
-            { type: 'callout', variant: 'skull', text: 'Speed prompting gets you a prototype. Scale prompting gets you a product.' },
-            { type: 'p', text: "To build something that lasts longer than the weekend, you must force the AI to execute sequentially:" },
-            {
-                type: 'ol', items: [
-                    'First, define the strictly typed interfaces in `types.ts`.',
-                    'Second, scaffold the blank UI components so they compile visually.',
-                    'Third, write the isolated database access logic.',
-                    'Fourth, wire the state and components together.'
-                ]
-            },
-            { type: 'p', text: "By breaking the prompt down, you force the AI to generate a clean, modular architecture that you can actually maintain." }
-        ]
-    }
+
 ];
