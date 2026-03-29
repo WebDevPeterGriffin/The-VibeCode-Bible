@@ -10,7 +10,7 @@ export default function PlaygroundPage() {
             </div>
             <h1 className="text-3xl font-bold tracking-tight mb-4 text-center">Interactive AI Playground</h1>
             <p className="text-foreground/60 leading-relaxed max-w-lg text-center mb-8">
-                The ultimate test environment is currently under construction. Soon, you'll be able to write workflows, invoke specific skills directly in the browser, and watch the exact logical execution steps of your agents in real time.
+                The ultimate test environment is currently under construction. Soon, you&apos;ll be able to write workflows, invoke specific skills directly in the browser, and watch the exact logical execution steps of your agents in real time.
             </p>
             <div className="px-6 py-3 rounded-full border border-border bg-muted/50 text-sm font-mono text-foreground/70 shadow-inner">
                 Status: In Development 🚀

@@ -102,7 +102,7 @@ export default function AiAgentsPage() {
                             <h3 className="font-medium mb-3">How to Use It</h3>
                             <p className="text-foreground/80 leading-relaxed pb-3">Once initialized, the skill auto-activates boundaries in your hidden `.agents` folder. Just chat naturally with your agent:</p>
                             <div className="bg-muted p-4 rounded-md border text-sm font-mono mt-2 mb-4">
-                                "Build a landing page for my SaaS product. Make it dark mode."
+                                &quot;Build a landing page for my SaaS product. Make it dark mode.&quot;
                             </div>
                         </section>
 
@@ -159,7 +159,7 @@ export default function AiAgentsPage() {
 
                         <section>
                             <h3 className="font-medium mb-3">How to Use It</h3>
-                            <p className="text-foreground/80 leading-relaxed pb-3">Simply copy the rules that match your tech stack and paste them into your project's root <code className="bg-muted px-1.5 py-0.5 rounded text-sm text-pink-400">.cursorrules</code> or <code className="bg-muted px-1.5 py-0.5 rounded text-sm text-pink-400">.cursor/rules/</code> directory. The AI magically reads them on every prompt.</p>
+                            <p className="text-foreground/80 leading-relaxed pb-3">Simply copy the rules that match your tech stack and paste them into your project&apos;s root <code className="bg-muted px-1.5 py-0.5 rounded text-sm text-pink-400">.cursorrules</code> or <code className="bg-muted px-1.5 py-0.5 rounded text-sm text-pink-400">.cursor/rules/</code> directory. The AI magically reads them on every prompt.</p>
                             <div className="bg-black/50 p-4 rounded-md border text-sm font-mono mt-2 mb-4 whitespace-pre text-zinc-300">
                                 <span className="text-zinc-500">{"# Download a specific Next.js skill directly"}</span><br />
                                 curl -O https://raw.githubusercontent.com/PatrickJS/awesome-cursorrules/main/rules/nextjs.mdc
