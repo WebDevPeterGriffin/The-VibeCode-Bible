@@ -42,7 +42,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to explore
 
 ## 🧠 What's Inside?
 
-### 📚 16 Sections of Real Experience
+### 📚 22 Lessons in 6 Categories
 - **My Exact Setup** — the stack, extensions, folder structure, and settings I use daily
 - **The AGENTS.md System** — how I give AI agents permanent context so they stop making dumb mistakes
 - **Antigravity vs Claude Code** — when to use which one and why, from someone who uses both daily
@@ -60,8 +60,8 @@ Pre-loaded and ready to use the second you clone. No extra installs needed.
 | **UI/UX Design Agent** | 31 | [@nextlevelbuilder](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | Deep design intelligence — 50 styles, 21 palettes, 50 font pairings |
 | **Honnibal Claude Skills** | 10 | [@honnibal](https://github.com/honnibal/claude-skills) | Mutation testing, type tightening, hypothesis tests, contract docstrings |
 
-### ⚡ 6 Executable Agent Workflows
-Slash-command automation scripts your AI agent can run directly.
+### ⚡ 9 Executable Agent Workflows
+Slash-command automation scripts your AI agent can run directly. The system automatically discovers new workflows added to `.agent/workflows/`.
 
 | Workflow | Command | Steps |
 |---|---|---|
@@ -71,6 +71,9 @@ Slash-command automation scripts your AI agent can run directly.
 | Landing Page Generator | `/landing-page` | 7 |
 | Code Quality Review | `/code-review` | 7 |
 | Deploy Checklist | `/deploy-checklist` | 8 |
+| Debug Session | `/Debug-session` | 10 |
+| Performance Audit | `/Performance-audit` | 10 |
+| Security Audit | `/security-audit` | 10 |
 
 ### 🏗️ Production-Grade AGENTS.md
 A battle-tested system prompt that enforces Next.js 14, TypeScript strict mode, Tailwind v4, dark-mode-first aesthetics, semantic HTML, and conventional commits across every AI interaction.
