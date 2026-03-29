@@ -205,34 +205,35 @@ export default function AiAgentsPage() {
                                 <Terminal className="w-5 h-5 text-indigo-500" /> Agent Workflows
                             </h2>
                             <p className="text-foreground/80 leading-relaxed">
-                                Workflows are step-by-step automation scripts stored in <code className="bg-muted px-1.5 py-0.5 rounded text-sm text-indigo-400">.agent/workflows/</code>. Your AI agent reads these files and executes each step sequentially against your codebase.
+                                Workflows are step-by-step automation scripts stored in <code className="bg-muted px-1.5 py-0.5 rounded text-sm text-indigo-400">.agent/workflows/</code>. Your AI agent reads these files and executes each step sequentially against your codebase. Invoke any workflow by typing the slash command in your agent terminal.
                             </p>
                         </section>
 
-                        <div className="border border-border/50 rounded-lg overflow-hidden">
-                            <div className="bg-muted/50 px-4 py-3 border-b border-border/50 flex items-center gap-2">
-                                <Terminal className="w-4 h-4 text-indigo-400" />
-                                <span className="font-mono text-sm text-indigo-400">/project-cleanup</span>
-                                <span className="text-xs text-foreground/40 ml-auto">8 steps</span>
-                            </div>
-                            <div className="p-4 space-y-3 text-sm text-foreground/80">
-                                <p className="text-foreground/60 text-xs uppercase tracking-wider font-medium mb-2">What it does:</p>
-                                <ul className="space-y-2">
-                                    <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">✓</span> Deletes build artifacts (<code className="text-xs bg-muted px-1 rounded">.next/</code>, <code className="text-xs bg-muted px-1 rounded">tsbuildinfo</code>)</li>
-                                    <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">✓</span> Purges all <code className="text-xs bg-muted px-1 rounded">.log</code> and <code className="text-xs bg-muted px-1 rounded">.log.tmp</code> files recursively</li>
-                                    <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">✓</span> Removes OS junk (<code className="text-xs bg-muted px-1 rounded">.DS_Store</code>, <code className="text-xs bg-muted px-1 rounded">Thumbs.db</code>)</li>
-                                    <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">✓</span> Audits <code className="text-xs bg-muted px-1 rounded">.gitignore</code> for missing entries</li>
-                                    <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">✓</span> Runs TypeScript compiler (<code className="text-xs bg-muted px-1 rounded">tsc --noEmit</code>)</li>
-                                    <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">✓</span> Runs production build to catch runtime errors</li>
-                                    <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">✓</span> Scans for oversized files (&gt;500KB) in the Git index</li>
-                                    <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">✓</span> Stages clean files for commit</li>
-                                </ul>
-                            </div>
+                        <div className="grid gap-3">
+                            {[
+                                { cmd: '/project-cleanup', desc: 'Delete build artifacts, purge logs, remove OS junk, audit .gitignore, run TypeScript checks, and scan for oversized files.', steps: 8, color: 'text-green-400' },
+                                { cmd: '/new-feature', desc: 'Scaffold a new feature with route directory, page component, reusable component, TypeScript types, and verification.', steps: 6, color: 'text-blue-400' },
+                                { cmd: '/seo-audit', desc: 'Audit any URL for meta tags, heading hierarchy, missing alt attributes, structured data, and page load performance.', steps: 7, color: 'text-yellow-400' },
+                                { cmd: '/landing-page', desc: 'Generate a complete dark-mode landing page with hero, features grid, social proof, CTA section, and footer.', steps: 7, color: 'text-pink-400' },
+                                { cmd: '/code-review', desc: 'Scan for type safety issues, console.log leftovers, hardcoded strings, naming conventions, and generate a severity report.', steps: 7, color: 'text-orange-400' },
+                                { cmd: '/deploy-checklist', desc: 'Verify env variables, run production build, check bundle size, scan for exposed secrets, and tag a release.', steps: 8, color: 'text-cyan-400' },
+                            ].map((wf) => (
+                                <div key={wf.cmd} className="border border-border/50 rounded-lg overflow-hidden hover:border-border transition-colors">
+                                    <div className="bg-muted/30 px-4 py-3 flex items-center gap-2">
+                                        <Terminal className="w-4 h-4 text-indigo-400" />
+                                        <span className={`font-mono text-sm ${wf.color}`}>{wf.cmd}</span>
+                                        <span className="text-xs text-foreground/40 ml-auto">{wf.steps} steps</span>
+                                    </div>
+                                    <div className="px-4 py-3 text-sm text-foreground/70">{wf.desc}</div>
+                                </div>
+                            ))}
                         </div>
 
                         <div className="bg-black/50 p-4 rounded-md border text-sm font-mono text-zinc-300">
-                            <span className="text-zinc-500">{"# Invoke from your AI agent terminal:"}</span><br />
-                            /project-cleanup
+                            <span className="text-zinc-500">{"# Invoke any workflow from your AI agent terminal:"}</span><br />
+                            /project-cleanup<br />
+                            /new-feature<br />
+                            /seo-audit https://example.com
                         </div>
                     </div>
                 )}
