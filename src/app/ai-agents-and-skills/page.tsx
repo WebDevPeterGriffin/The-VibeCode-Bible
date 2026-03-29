@@ -17,7 +17,7 @@ export default function AiAgentsPage() {
             </div>
 
             {/* Tabs Navigation */}
-            <div className="flex overflow-x-auto whitespace-nowrap gap-2 border-b border-border/50 pb-px mb-8 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            <div className="flex flex-wrap gap-2 border-b border-border/50 pb-px mb-8">
                 <button
                     onClick={() => setActiveTab('overview')}
                     className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 ${activeTab === 'overview' ? 'border-primary text-foreground' : 'border-transparent text-foreground/50 hover:text-foreground hover:border-border'}`}
@@ -77,10 +77,10 @@ export default function AiAgentsPage() {
                                 <h3 className="font-medium text-primary mb-1">Global CLI Installation Example</h3>
                                 <p className="text-sm text-foreground/70 mb-3">If you are starting a fresh project elsewhere, you can run these commands globally:</p>
                                 <div className="bg-black/50 p-3 rounded-md overflow-x-auto text-sm font-mono text-zinc-300">
-                                    <div className="text-zinc-500 mb-1"># Example: Installing a UI design skill via NPM</div>
-                                    <div className="mb-3">npm install -g design-agent-cli<br />design-agent init</div>
-                                    <div className="text-zinc-500 mb-1"># Example: Cloning an SEO sub-agent locally</div>
-                                    <div>git clone --depth 1 https://github.com/example/seo-agent.git<br />cd seo-agent && ./install.sh</div>
+                                    <div className="text-zinc-500 mb-1"># Example: Installing an Agent Skill via NPM</div>
+                                    <div className="mb-3">npm install -g some-agent-skill<br />some-agent init</div>
+                                    <div className="text-zinc-500 mb-1"># Example: Cloning a GitHub Community Skill locally</div>
+                                    <div>git clone --depth 1 https://github.com/community/awesome-agent.git<br />cd awesome-agent && ./install.sh</div>
                                 </div>
                             </div>
                         </div>
