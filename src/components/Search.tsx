@@ -32,10 +32,31 @@ export default function Search() {
         }
     }, [isOpen]);
 
-    const results = query ? content.filter(c => {
-        const textToMatch = c.title + " " + c.blocks.map(b => b.text || b.code || '').join(" ");
-        return textToMatch.toLowerCase().includes(query.toLowerCase());
-    }) : [];
+    const results = query ? content.map(section => {
+        const lowerQuery = query.toLowerCase();
+        const titleMatch = section.title.toLowerCase().includes(lowerQuery);
+
+        const matchedBlock = section.blocks.find(b =>
+            (b.text && b.text.toLowerCase().includes(lowerQuery)) ||
+            (b.code && b.code.toLowerCase().includes(lowerQuery)) ||
+            (b.items && b.items.some(item => item.toLowerCase().includes(lowerQuery)))
+        );
+
+        if (titleMatch || matchedBlock) {
+            let previewText = section.blocks.find(b => b.type === 'p')?.text || section.blocks[0]?.text || '';
+
+            if (!titleMatch && matchedBlock) {
+                if (matchedBlock.text) previewText = matchedBlock.text;
+                else if (matchedBlock.code) previewText = `💻 Code snippet match...`;
+                else if (matchedBlock.items) previewText = matchedBlock.items.find(i => i.toLowerCase().includes(lowerQuery)) || '';
+            }
+
+            // Highlight the query if it exists in the previewText (simple case-insensitive bolding is too complex for here, 
+            // but returning the highly specific matching text block is a massive UX win).
+            return { section, previewText };
+        }
+        return null;
+    }).filter((item): item is { section: typeof content[number], previewText: string } => item !== null) : [];
 
     return (
         <>
@@ -76,14 +97,14 @@ export default function Search() {
                                 {results.length > 0 ? (
                                     results.map((res) => (
                                         <Link
-                                            key={res.slug}
-                                            href={`/${res.slug}`}
+                                            key={res.section.slug}
+                                            href={`/${res.section.slug}`}
                                             onClick={() => setIsOpen(false)}
                                             className="block px-4 py-3 hover:bg-muted rounded-lg transition-colors text-left"
                                         >
-                                            <div className="font-medium text-primary">{res.title}</div>
+                                            <div className="font-medium text-primary">{res.section.title}</div>
                                             <div className="text-sm text-foreground/60 line-clamp-1 mt-1">
-                                                {res.blocks[0].text}
+                                                {res.previewText}
                                             </div>
                                         </Link>
                                     ))
