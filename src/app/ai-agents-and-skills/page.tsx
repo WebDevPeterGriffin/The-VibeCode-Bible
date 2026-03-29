@@ -28,13 +28,13 @@ export default function AiAgentsPage() {
                     onClick={() => setActiveTab('uiux')}
                     className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 ${activeTab === 'uiux' ? 'border-primary text-foreground' : 'border-transparent text-foreground/50 hover:text-foreground hover:border-border'}`}
                 >
-                    UI UX Pro Max
+                    Design Agent (UI/UX)
                 </button>
                 <button
                     onClick={() => setActiveTab('seo')}
                     className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 ${activeTab === 'seo' ? 'border-primary text-foreground' : 'border-transparent text-foreground/50 hover:text-foreground hover:border-border'}`}
                 >
-                    Claude SEO
+                    SEO & Growth Agent
                 </button>
                 <button
                     onClick={() => setActiveTab('cursorrules')}
@@ -77,10 +77,10 @@ export default function AiAgentsPage() {
                                 <h3 className="font-medium text-primary mb-1">Global CLI Installation Example</h3>
                                 <p className="text-sm text-foreground/70 mb-3">If you are starting a fresh project elsewhere, you can run these commands globally:</p>
                                 <div className="bg-black/50 p-3 rounded-md overflow-x-auto text-sm font-mono text-zinc-300">
-                                    <div className="text-zinc-500 mb-1"># UI UX Pro Max</div>
-                                    <div className="mb-3">npm install -g uipro-cli<br />uipro init --ai antigravity</div>
-                                    <div className="text-zinc-500 mb-1"># Claude SEO (Windows)</div>
-                                    <div>git clone --depth 1 https://github.com/AgriciDaniel/claude-seo.git<br />powershell -ExecutionPolicy Bypass -File claude-seo\install.ps1</div>
+                                    <div className="text-zinc-500 mb-1"># Example: Installing a UI design skill via NPM</div>
+                                    <div className="mb-3">npm install -g design-agent-cli<br />design-agent init</div>
+                                    <div className="text-zinc-500 mb-1"># Example: Cloning an SEO sub-agent locally</div>
+                                    <div>git clone --depth 1 https://github.com/example/seo-agent.git<br />cd seo-agent && ./install.sh</div>
                                 </div>
                             </div>
                         </div>
@@ -91,16 +91,16 @@ export default function AiAgentsPage() {
                     <div className="space-y-6">
                         <section>
                             <h2 className="text-xl font-semibold mb-3 flex items-center gap-2">
-                                <Code className="w-5 h-5 text-blue-500" /> UI/UX Pro Max
+                                <Code className="w-5 h-5 text-blue-500" /> Advanced Design Agents
                             </h2>
                             <p className="text-foreground/80 leading-relaxed">
-                                This repository comes pre-installed with the <a href="https://github.com/nextlevelbuilder/ui-ux-pro-max-skill" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">UI UX Pro Max</a> skill. It provides deep design intelligence for generating professional UI/UX, avoiding standard sterile AI outputs.
+                                You can load comprehensive UI/UX intelligence skills into your repository. These provide deep design rules for generating professional interfaces, avoiding standard sterile AI outputs.
                             </p>
                         </section>
 
                         <section>
                             <h3 className="font-medium mb-3">How to Use It</h3>
-                            <p className="text-foreground/80 leading-relaxed pb-3">Because we ran `uipro init`, the skill is auto-activated boundaries in your hidden `.agents` folder. Just chat naturally with your agent:</p>
+                            <p className="text-foreground/80 leading-relaxed pb-3">Once initialized, the skill auto-activates boundaries in your hidden `.agents` folder. Just chat naturally with your agent:</p>
                             <div className="bg-muted p-4 rounded-md border text-sm font-mono mt-2 mb-4">
                                 "Build a landing page for my SaaS product. Make it dark mode."
                             </div>
@@ -120,10 +120,10 @@ export default function AiAgentsPage() {
                     <div className="space-y-6">
                         <section>
                             <h2 className="text-xl font-semibold mb-3 flex items-center gap-2">
-                                <ShieldCheck className="w-5 h-5 text-green-500" /> Claude SEO
+                                <ShieldCheck className="w-5 h-5 text-green-500" /> Technical SEO Agents
                             </h2>
                             <p className="text-foreground/80 leading-relaxed">
-                                We also use <a href="https://github.com/AgriciDaniel/claude-seo" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Claude SEO</a>, a universal SEO skill composed of 13 sub-skills and 7 subagents working in tandem.
+                                You can easily integrate universal SEO skills composed of multiple sub-skills functioning in tandem.
                             </p>
                         </section>
 
