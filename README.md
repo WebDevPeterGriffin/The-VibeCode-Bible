@@ -1,6 +1,6 @@
 <div align="center">
 
-# ⚡ Vibe Coding Playbook
+# ⚡ The VibeCode Bible
 
 <a href="https://instagram.com/web.dev.george" target="_blank">
   <img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram @web.dev.george" />
@@ -36,7 +36,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to explore the playbook.
+Open [http://localhost:3000](http://localhost:3000) with your browser to explore the bible.
 
 ---
 
