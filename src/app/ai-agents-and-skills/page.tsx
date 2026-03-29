@@ -67,7 +67,7 @@ export default function AiAgentsPage() {
                             <p className="text-foreground/80 leading-relaxed">
                                 The easiest way to add a skill is to install it via npm or CLI tools, or simply drop the instruction markdown into a specific folder like <code className="bg-muted px-1.5 py-0.5 rounded text-sm text-primary">.agents/</code> or <code className="bg-muted px-1.5 py-0.5 rounded text-sm text-primary">src/skills/</code>.
                                 <br /><br />
-                                When cloning this repository, you automatically gain access to the integrated skills inside the `.agents/` and `.claude/` directories since we already ran the initialization tools globally.
+                                When cloning this repository, you automatically gain access to a massive library of integrated skills spanning UI design, advanced SEO, code auditing, and strict framework guidelines. These are securely embedded across your <code className="bg-muted px-1.5 py-0.5 rounded text-sm text-primary">.agents/</code>, <code className="bg-muted px-1.5 py-0.5 rounded text-sm text-primary">.claude/</code>, and <code className="bg-muted px-1.5 py-0.5 rounded text-sm text-primary">.cursor/</code> directories.
                             </p>
                         </section>
 
