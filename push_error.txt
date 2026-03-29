@@ -1,0 +1,49 @@
+﻿git : remote: error: 
+GH013: Repository 
+rule violations 
+found for 
+refs/heads/main.     
+   
+At line:1 char:1
++ git push 2>&1 | 
+Out-File -Encoding 
+utf8 push_error.txt; 
+Write-Host "D ...
++ ~~~~~~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: (remote:   
+  error: ...s/mai    
+n.        :Strin    
+g) [], RemoteExc    
+eption
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+remote: Review all 
+repository rules at h
+ttps://github.com/Web
+DevPeterGriffin/The-V
+ibeCode-Bible/rules?r
+ef=refs%2Fheads%2Fmai
+n        
+remote: 
+remote: - Changes 
+must be made through 
+a pull request.      
+  
+remote: 
+To https://github.com
+/WebDevPeterGriffin/T
+he-VibeCode-Bible.git
+ ! [remote rejected] 
+main -> main (push 
+declined due to 
+repository rule 
+violations)
+error: failed to 
+push some refs to 'ht
+tps://github.com/WebD
+evPeterGriffin/The-Vi
+beCode-Bible.git'
