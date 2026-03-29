@@ -12,7 +12,7 @@ export default function AiAgentsPage() {
                 <h1 className="text-3xl font-bold tracking-tight mb-2">AI Agents & Skills Toolbox</h1>
                 <p className="text-foreground/60 leading-relaxed">
                     Raw prompts get you 60% of the way there. Skill files get you the rest.
-                    This repo comes pre-loaded with two of the best ones I have found.
+                    This repo comes pre-loaded with a massively growing list of the best ones I have found.
                 </p>
             </div>
 
@@ -212,7 +212,7 @@ export default function AiAgentsPage() {
                             <span className="text-xl">⚙️</span>
                             <div className="text-indigo-200/90 leading-relaxed">
                                 <strong className="text-indigo-400 block mb-1">Coming Soon</strong>
-                                The workflow execution engine is currently in development. You will soon be able to write automation scripts seamlessly combining UI UX Pro Max and Claude SEO here.
+                                The workflow execution engine is currently in development. You will soon be able to write automation scripts seamlessly combining all your specialized agent skills into unified chains.
                             </div>
                         </div>
                     </div>
