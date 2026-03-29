@@ -2,7 +2,7 @@ import { content } from '@/data/content';
 import Link from 'next/link';
 
 export default function Home() {
-  const firstSection = content[0];
+  const firstSection = content[0]?.sections[0];
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -19,7 +19,7 @@ export default function Home() {
 
       <h2 className="text-2xl font-semibold tracking-tight mb-4 border-b border-border/50 pb-2">Contents</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {content.map((section) => (
+        {content.flatMap(c => c.sections).map((section) => (
           <Link
             key={section.slug}
             href={`/${section.slug}`}

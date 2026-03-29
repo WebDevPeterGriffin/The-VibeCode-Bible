@@ -32,7 +32,7 @@ export default function Search() {
         }
     }, [isOpen]);
 
-    const results = query ? content.map(section => {
+    const results = query ? content.flatMap(c => c.sections).map(section => {
         const lowerQuery = query.toLowerCase();
         const titleMatch = section.title.toLowerCase().includes(lowerQuery);
 
@@ -51,12 +51,10 @@ export default function Search() {
                 else if (matchedBlock.items) previewText = matchedBlock.items.find(i => i.toLowerCase().includes(lowerQuery)) || '';
             }
 
-            // Highlight the query if it exists in the previewText (simple case-insensitive bolding is too complex for here, 
-            // but returning the highly specific matching text block is a massive UX win).
             return { section, previewText };
         }
         return null;
-    }).filter((item): item is { section: typeof content[number], previewText: string } => item !== null) : [];
+    }).filter((item): item is { section: typeof content[number]['sections'][number], previewText: string } => item !== null) : [];
 
     return (
         <>

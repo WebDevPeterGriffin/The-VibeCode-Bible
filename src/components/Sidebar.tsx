@@ -27,21 +27,30 @@ export default function Sidebar() {
 
             <div className="flex-1 overflow-y-auto px-4 pb-6 hidden md:block">
                 <div className="space-y-1">
-                    {content.filter(s => s.slug !== 'ai-agents-and-skills').map((section) => {
-                        const isActive = pathname === `/${section.slug}`;
-                        const isRead = progress.includes(section.slug);
+                    {content.map((category) => (
+                        <div key={category.id} className="mb-6">
+                            <h3 className="text-xs font-semibold text-foreground/40 uppercase tracking-wider mb-2 px-3">
+                                {category.title}
+                            </h3>
+                            <div className="space-y-0.5">
+                                {category.sections.map((section) => {
+                                    const isActive = pathname === `/${section.slug}`;
+                                    const isRead = progress.includes(section.slug);
 
-                        return (
-                            <Link
-                                key={section.slug}
-                                href={`/${section.slug}`}
-                                className={`flex items-center gap-3 px-3 py-2 rounded-md transition-all text-sm ${isActive ? 'bg-muted text-primary font-medium' : 'text-foreground/70 hover:bg-muted/50 hover:text-foreground'}`}
-                            >
-                                <div className={`w-2 h-2 rounded-full border border-current ${isRead ? 'bg-current' : 'opacity-30'}`} />
-                                <span className="line-clamp-1">{section.title}</span>
-                            </Link>
-                        )
-                    })}
+                                    return (
+                                        <Link
+                                            key={section.slug}
+                                            href={`/${section.slug}`}
+                                            className={`flex items-center gap-3 px-3 py-2 rounded-md transition-all text-sm ${isActive ? 'bg-muted text-primary font-medium' : 'text-foreground/70 hover:bg-muted/50 hover:text-foreground'}`}
+                                        >
+                                            <div className={`w-2 h-2 rounded-full border border-current ${isRead ? 'bg-current' : 'opacity-30'}`} />
+                                            <span className="line-clamp-1">{section.title.replace(/^\d+\.\s*/, '')}</span>
+                                        </Link>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
 
@@ -59,7 +68,7 @@ export default function Sidebar() {
                     <span className="line-clamp-1">AI Playground</span>
                 </Link>
                 <div className="text-xs text-foreground/40 text-center mt-1">
-                    {progress.filter(slug => slug !== 'ai-agents-and-skills' && slug !== 'playground').length} / {content.filter(s => s.slug !== 'ai-agents-and-skills' && s.slug !== 'playground').length} sections completed
+                    {progress.filter(slug => slug !== 'ai-agents-and-skills' && slug !== 'playground').length} / {content.reduce((acc, cat) => acc + cat.sections.length, 0)} sections completed
                 </div>
             </div>
         </nav>

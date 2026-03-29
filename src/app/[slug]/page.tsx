@@ -1,4 +1,5 @@
-import { content, Block } from '@/data/content';
+import { content } from '@/data/content';
+import { Block } from '@/data/types';
 import { notFound } from 'next/navigation';
 import CallOut from '@/components/CallOut';
 import CodeBlock from '@/components/CodeBlock';
@@ -7,7 +8,7 @@ import ProgressUpdater from './ProgressUpdater';
 import ReadAloud from '@/components/ReadAloud';
 
 export function generateStaticParams() {
-    return content.map((section) => ({
+    return content.flatMap(c => c.sections).map((section) => ({
         slug: section.slug,
     }));
 }
@@ -56,13 +57,13 @@ function renderBlock(block: Block, index: number) {
         case 'ul':
             return (
                 <ul key={index} className="list-disc list-inside mb-4 space-y-2 text-foreground/90 marker:text-primary/50">
-                    {block.items?.map((item, i) => <li key={i}>{renderText(item)}</li>)}
+                    {block.items?.map((item: string, i: number) => <li key={i}>{renderText(item)}</li>)}
                 </ul>
             );
         case 'ol':
             return (
                 <ol key={index} className="list-decimal list-inside mb-4 space-y-2 text-foreground/90 marker:text-primary/50">
-                    {block.items?.map((item, i) => <li key={i}>{renderText(item)}</li>)}
+                    {block.items?.map((item: string, i: number) => <li key={i}>{renderText(item)}</li>)}
                 </ol>
             );
         case 'callout':
@@ -75,15 +76,16 @@ function renderBlock(block: Block, index: number) {
 }
 
 export default function SectionPage({ params }: { params: { slug: string } }) {
-    const sectionIndex = content.findIndex((s) => s.slug === params.slug);
-    const section = content[sectionIndex];
+    const allSections = content.flatMap(c => c.sections);
+    const sectionIndex = allSections.findIndex((s) => s.slug === params.slug);
+    const section = allSections[sectionIndex];
 
     if (!section) {
         notFound();
     }
 
-    const prevSection = sectionIndex > 0 ? content[sectionIndex - 1] : null;
-    const nextSection = sectionIndex < content.length - 1 ? content[sectionIndex + 1] : null;
+    const prevSection = sectionIndex > 0 ? allSections[sectionIndex - 1] : null;
+    const nextSection = sectionIndex < allSections.length - 1 ? allSections[sectionIndex + 1] : null;
 
     return (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">

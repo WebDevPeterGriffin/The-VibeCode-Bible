@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Section } from '@/data/content';
+import { Section } from '@/data/types';
 import { Play, Square, Pause } from 'lucide-react';
 
 export default function ReadAloud({ section }: { section: Section }) {
