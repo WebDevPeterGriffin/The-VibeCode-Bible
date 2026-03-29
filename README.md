@@ -48,6 +48,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to explore
 - **Honest AI Breakdown** — Claude, ChatGPT, Gemini — no fluff, just which one to use for what
 - **Real Project Walkthrough** — how I built Siteo in 3 days using this exact workflow
 - **Mistakes I Made** — the stuff that wasted my time so you don't repeat it
+- **Custom Skill Integrations** — A rapidly expanding library of viral AI agent workflows and modular `.cursorrules` that instantly enhance your developer stack.
 
 ---
 
