@@ -25,7 +25,7 @@ export default function Sidebar() {
                 <p className="text-sm text-foreground/60 md:mt-1">Everything I know.</p>
             </div>
 
-            <div className="flex-1 overflow-y-auto px-4 pb-6 hidden md:block">
+            <div className="flex-1 overflow-y-auto custom-scrollbar px-4 pb-6 hidden md:block">
                 <div className="space-y-1">
                     {content.map((category) => (
                         <div key={category.id} className="mb-6">

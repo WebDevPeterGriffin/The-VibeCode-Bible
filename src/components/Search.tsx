@@ -91,7 +91,7 @@ export default function Search() {
                         </div>
 
                         {query && (
-                            <div className="max-h-[60vh] overflow-y-auto p-2">
+                            <div className="max-h-[60vh] overflow-y-auto custom-scrollbar p-2">
                                 {results.length > 0 ? (
                                     results.map((res) => (
                                         <Link
