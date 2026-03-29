@@ -42,7 +42,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to explore
 
 ## 🧠 What's Inside?
 
-### 📚 10 In-Depth Lessons
+### 📚 10 Sections of Real Experience
 - **My Exact Setup** — the stack, extensions, folder structure, and settings I use daily
 - **The AGENTS.md System** — how I give AI agents permanent context so they stop making dumb mistakes
 - **Antigravity vs Claude Code** — when to use which one and why, from someone who uses both daily
