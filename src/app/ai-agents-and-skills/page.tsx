@@ -205,15 +205,34 @@ export default function AiAgentsPage() {
                                 <Terminal className="w-5 h-5 text-indigo-500" /> Agent Workflows
                             </h2>
                             <p className="text-foreground/80 leading-relaxed">
-                                Workflows allow you to chain multiple agent skills logically to execute complex, multi-step tasks across the entire repository.
+                                Workflows are step-by-step automation scripts stored in <code className="bg-muted px-1.5 py-0.5 rounded text-sm text-indigo-400">.agent/workflows/</code>. Your AI agent reads these files and executes each step sequentially against your codebase.
                             </p>
                         </section>
-                        <div className="bg-indigo-500/10 border border-indigo-500/20 rounded-lg p-4 flex gap-3 text-sm">
-                            <span className="text-xl">⚙️</span>
-                            <div className="text-indigo-200/90 leading-relaxed">
-                                <strong className="text-indigo-400 block mb-1">Coming Soon</strong>
-                                The workflow execution engine is currently in development. You will soon be able to write automation scripts seamlessly combining all your specialized agent skills into unified chains.
+
+                        <div className="border border-border/50 rounded-lg overflow-hidden">
+                            <div className="bg-muted/50 px-4 py-3 border-b border-border/50 flex items-center gap-2">
+                                <Terminal className="w-4 h-4 text-indigo-400" />
+                                <span className="font-mono text-sm text-indigo-400">/project-cleanup</span>
+                                <span className="text-xs text-foreground/40 ml-auto">8 steps</span>
                             </div>
+                            <div className="p-4 space-y-3 text-sm text-foreground/80">
+                                <p className="text-foreground/60 text-xs uppercase tracking-wider font-medium mb-2">What it does:</p>
+                                <ul className="space-y-2">
+                                    <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">✓</span> Deletes build artifacts (<code className="text-xs bg-muted px-1 rounded">.next/</code>, <code className="text-xs bg-muted px-1 rounded">tsbuildinfo</code>)</li>
+                                    <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">✓</span> Purges all <code className="text-xs bg-muted px-1 rounded">.log</code> and <code className="text-xs bg-muted px-1 rounded">.log.tmp</code> files recursively</li>
+                                    <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">✓</span> Removes OS junk (<code className="text-xs bg-muted px-1 rounded">.DS_Store</code>, <code className="text-xs bg-muted px-1 rounded">Thumbs.db</code>)</li>
+                                    <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">✓</span> Audits <code className="text-xs bg-muted px-1 rounded">.gitignore</code> for missing entries</li>
+                                    <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">✓</span> Runs TypeScript compiler (<code className="text-xs bg-muted px-1 rounded">tsc --noEmit</code>)</li>
+                                    <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">✓</span> Runs production build to catch runtime errors</li>
+                                    <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">✓</span> Scans for oversized files (&gt;500KB) in the Git index</li>
+                                    <li className="flex items-start gap-2"><span className="text-green-500 mt-0.5">✓</span> Stages clean files for commit</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div className="bg-black/50 p-4 rounded-md border text-sm font-mono text-zinc-300">
+                            <span className="text-zinc-500">{"# Invoke from your AI agent terminal:"}</span><br />
+                            /project-cleanup
                         </div>
                     </div>
                 )}
