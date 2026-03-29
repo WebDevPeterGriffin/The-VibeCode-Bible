@@ -45,15 +45,21 @@ export default function Sidebar() {
                 </div>
             </div>
 
-            <div className="p-4 border-t border-border/50 hidden md:flex flex-col gap-4 mt-auto">
+            <div className="p-4 border-t border-border/50 hidden md:flex flex-col gap-3 mt-auto">
                 <Link
                     href="/ai-agents-and-skills"
                     className={`flex items-center justify-center gap-2 px-3 py-2 rounded-md transition-all text-sm font-medium border border-primary/20 bg-primary/10 text-primary hover:bg-primary/20 ${pathname === '/ai-agents-and-skills' ? 'ring-2 ring-primary/50' : ''}`}
                 >
                     <span className="line-clamp-1">AI Agents & Skills</span>
                 </Link>
-                <div className="text-xs text-foreground/40 text-center">
-                    {progress.filter(slug => slug !== 'ai-agents-and-skills').length} / {content.filter(s => s.slug !== 'ai-agents-and-skills').length} sections completed
+                <Link
+                    href="/playground"
+                    className={`flex items-center justify-center gap-2 px-3 py-2 rounded-md transition-all text-sm font-medium border border-purple-500/20 bg-purple-500/10 text-purple-400 hover:bg-purple-500/20 ${pathname === '/playground' ? 'ring-2 ring-purple-500/50' : ''}`}
+                >
+                    <span className="line-clamp-1">AI Playground</span>
+                </Link>
+                <div className="text-xs text-foreground/40 text-center mt-1">
+                    {progress.filter(slug => slug !== 'ai-agents-and-skills' && slug !== 'playground').length} / {content.filter(s => s.slug !== 'ai-agents-and-skills' && s.slug !== 'playground').length} sections completed
                 </div>
             </div>
         </nav>

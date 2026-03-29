@@ -21,13 +21,13 @@ By reading this file, you (the AI Agent) understand the exact technical constrai
 
 ## 4. UI/UX Intelligence (Auto-Activated)
 - Always prioritize **Dark-Mode-First** aesthetics.
-- Leverage the integrated `ui-ux-pro-max` skill inside the `.agents/` folder to generate professional, cohesive design systems rather than generic AI styles.
+- Leverage the integrated design skills inside the `.agents/` folder to generate professional, cohesive design systems rather than generic AI styles.
 - Use high-contrast text, smooth radius (`rounded-xl`), glassmorphism (`bg-white/5 backdrop-blur-md`), and proper visual spacing for all UIs.
 
 ## 5. SEO & Growth Workflows
 - Always ensure pages have valid static & dynamic metadata (`metadata` object in App Router).
 - Utilize Semantic HTML (`<article>`, `<section>`, `<nav>`).
-- If asked to perform an SEO audit, natively invoke the integrated `.agents/claude-seo/` subagents.
+- If asked to perform complex workflows (like an SEO audit or a security scan), natively invoke the relevant integrated subagents inside the `.agents/` directory.
 
 ## 6. Git Protocol
 - Commit messages must follow Conventional Commits (e.g., `feat:`, `fix:`, `refactor:`).

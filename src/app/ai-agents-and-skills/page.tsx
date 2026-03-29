@@ -4,14 +4,15 @@ import { useState } from 'react';
 import { Terminal, Lightbulb, Zap, Code, ShieldCheck } from 'lucide-react';
 
 export default function AiAgentsPage() {
-    const [activeTab, setActiveTab] = useState<'overview' | 'uiux' | 'seo'>('overview');
+    const [activeTab, setActiveTab] = useState<'overview' | 'uiux' | 'seo' | 'cursorrules' | 'honnibal' | 'workflows'>('overview');
 
     return (
         <div className="w-full max-w-3xl mx-auto py-12 px-6">
             <div className="mb-10">
                 <h1 className="text-3xl font-bold tracking-tight mb-2">AI Agents & Skills Toolbox</h1>
                 <p className="text-foreground/60 leading-relaxed">
-                    To build powerful apps, you shouldn't rely solely on basic raw prompts. You need to use structured "Skills" files that the AI can read to enforce design systems, naming conventions, and best practices.
+                    Raw prompts get you 60% of the way there. Skill files get you the rest.
+                    This repo comes pre-loaded with two of the best ones I have found.
                 </p>
             </div>
 
@@ -34,6 +35,24 @@ export default function AiAgentsPage() {
                     className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 ${activeTab === 'seo' ? 'border-primary text-foreground' : 'border-transparent text-foreground/50 hover:text-foreground hover:border-border'}`}
                 >
                     Claude SEO
+                </button>
+                <button
+                    onClick={() => setActiveTab('cursorrules')}
+                    className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 ${activeTab === 'cursorrules' ? 'border-primary text-foreground' : 'border-transparent text-foreground/50 hover:text-foreground hover:border-border'}`}
+                >
+                    Awesome CursorRules
+                </button>
+                <button
+                    onClick={() => setActiveTab('honnibal')}
+                    className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 ${activeTab === 'honnibal' ? 'border-primary text-foreground' : 'border-transparent text-foreground/50 hover:text-foreground hover:border-border'}`}
+                >
+                    Honnibal Skills
+                </button>
+                <button
+                    onClick={() => setActiveTab('workflows')}
+                    className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 ${activeTab === 'workflows' ? 'border-primary text-foreground' : 'border-transparent text-foreground/50 hover:text-foreground hover:border-border'}`}
+                >
+                    Workflows
                 </button>
             </div>
 
@@ -122,6 +141,78 @@ export default function AiAgentsPage() {
                             <div className="text-yellow-200/90 leading-relaxed">
                                 <strong className="text-yellow-500 block mb-1">Advanced Mode</strong>
                                 It integrates directly with the DataForSEO MCP, granting web-search and rank-tracking capabilities completely inside your terminal.
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {activeTab === 'cursorrules' && (
+                    <div className="space-y-6">
+                        <section>
+                            <h2 className="text-xl font-semibold mb-3 flex items-center gap-2">
+                                <Code className="w-5 h-5 text-pink-500" /> Awesome CursorRules
+                            </h2>
+                            <p className="text-foreground/80 leading-relaxed">
+                                We utilize framework-specific boundaries from <a href="https://github.com/PatrickJS/awesome-cursorrules" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">PatrickJS/awesome-cursorrules</a>. This massively viral repository contains hundreds of optimized <code className="bg-muted px-1.5 py-0.5 rounded text-sm text-pink-400">.cursorrules</code> files that force your primary AI to follow industry-standard best practices for Next.js, Python, Go, and more.
+                            </p>
+                        </section>
+
+                        <section>
+                            <h3 className="font-medium mb-3">How to Use It</h3>
+                            <p className="text-foreground/80 leading-relaxed pb-3">Simply copy the rules that match your tech stack and paste them into your project's root <code className="bg-muted px-1.5 py-0.5 rounded text-sm text-pink-400">.cursorrules</code> or <code className="bg-muted px-1.5 py-0.5 rounded text-sm text-pink-400">.cursor/rules/</code> directory. The AI magically reads them on every prompt.</p>
+                            <div className="bg-black/50 p-4 rounded-md border text-sm font-mono mt-2 mb-4 whitespace-pre text-zinc-300">
+                                <span className="text-zinc-500">{"# Download a specific Next.js skill directly"}</span><br />
+                                curl -O https://raw.githubusercontent.com/PatrickJS/awesome-cursorrules/main/rules/nextjs.mdc
+                            </div>
+                        </section>
+                    </div>
+                )}
+
+                {activeTab === 'honnibal' && (
+                    <div className="space-y-6">
+                        <section>
+                            <h2 className="text-xl font-semibold mb-3 flex items-center gap-2">
+                                <Terminal className="w-5 h-5 text-cyan-500" /> Honnibal Claude Skills
+                            </h2>
+                            <p className="text-foreground/80 leading-relaxed">
+                                We also integrate <a href="https://github.com/honnibal/claude-skills" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">honnibal/claude-skills</a>, a highly regarded collection of reusable slash-command workflows for Claude Code focusing on practical, high-quality development like type-tightening and docstring generation.
+                            </p>
+                        </section>
+
+                        <section>
+                            <h3 className="font-medium mb-3">How to Use It</h3>
+                            <p className="text-foreground/80 leading-relaxed pb-3">Load the skills into your terminal workflow, allowing you to run powerful code auditing commands locally over your entire <code className="bg-muted px-1.5 py-0.5 rounded text-sm text-cyan-400">.src</code> tree.</p>
+                            <div className="bg-black/50 p-4 rounded-md border text-sm font-mono mt-2 mb-4 whitespace-pre text-zinc-300">
+                                /tighten-types src/components/<br />
+                                /generate-docstrings src/utils/
+                            </div>
+                        </section>
+
+                        <div className="bg-cyan-500/10 border border-cyan-500/20 rounded-lg p-4 flex gap-3 text-sm">
+                            <span className="text-xl">🛡️</span>
+                            <div className="text-cyan-200/90 leading-relaxed">
+                                <strong className="text-cyan-500 block mb-1">Security Warning</strong>
+                                Always independently audit third-party skills before running them, as they execute raw Python/Bash code on your local machine. These specific modules belong to the official VibeCode pre-vetted registry.
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {activeTab === 'workflows' && (
+                    <div className="space-y-6">
+                        <section>
+                            <h2 className="text-xl font-semibold mb-3 flex items-center gap-2">
+                                <Terminal className="w-5 h-5 text-indigo-500" /> Agent Workflows
+                            </h2>
+                            <p className="text-foreground/80 leading-relaxed">
+                                Workflows allow you to chain multiple agent skills logically to execute complex, multi-step tasks across the entire repository.
+                            </p>
+                        </section>
+                        <div className="bg-indigo-500/10 border border-indigo-500/20 rounded-lg p-4 flex gap-3 text-sm">
+                            <span className="text-xl">⚙️</span>
+                            <div className="text-indigo-200/90 leading-relaxed">
+                                <strong className="text-indigo-400 block mb-1">Coming Soon</strong>
+                                The workflow execution engine is currently in development. You will soon be able to write automation scripts seamlessly combining UI UX Pro Max and Claude SEO here.
                             </div>
                         </div>
                     </div>

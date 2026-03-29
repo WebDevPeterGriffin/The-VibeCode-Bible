@@ -41,7 +41,26 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to explore
 ---
 
 ## 🧠 What's Inside?
-- **The Core Framework**: My exact Next.js 14 and Tailwind setup.
-- **AI Tool Comparisons**: Why I use Claude over ChatGPT.
-- **Structured Agents**: How to use `.agents/` workflows to enforce strict coding rules.
-- **Custom Skills**: Built-in integrations for advanced design systems (*UI UX Pro Max*) and semantic execution (*Claude SEO*).
+
+- **My Exact Setup** — the stack, extensions, folder structure, and settings I use daily
+- **The AGENTS.md System** — how I give AI agents permanent context so they stop making dumb mistakes
+- **Antigravity vs Claude Code** — when to use which one and why, from someone who uses both daily
+- **Honest AI Breakdown** — Claude, ChatGPT, Gemini — no fluff, just which one to use for what
+- **Real Project Walkthrough** — how I built Siteo in 3 days using this exact workflow
+- **Mistakes I Made** — the stuff that wasted my time so you don't repeat it
+
+---
+
+## ☕ Support
+
+I built this and made it completely free. If it saved you time, helped you ship faster, or taught you something — consider leaving a donation. No pressure. Just vibes.
+
+<a href="https://webdevpeter.net/pages/the-vibecode-bible" target="_blank">
+  <img src="https://img.shields.io/badge/Support%20the%20project-%E2%98%95%20Donate-black?style=for-the-badge" alt="Donate" />
+</a>
+
+---
+
+<div align="center">
+  <sub>Built by <a href="https://instagram.com/web.dev.george">@web.dev.george</a> · Clone it. Run it. Read it.</sub>
+</div>
