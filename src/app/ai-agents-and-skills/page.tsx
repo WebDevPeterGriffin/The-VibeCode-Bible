@@ -17,7 +17,7 @@ export default function AiAgentsPage() {
             </div>
 
             {/* Tabs Navigation */}
-            <div className="flex flex-wrap gap-2 border-b border-border/50 pb-px mb-8">
+            <div className="flex overflow-x-auto whitespace-nowrap gap-2 border-b border-border/50 pb-px mb-8 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                 <button
                     onClick={() => setActiveTab('overview')}
                     className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 ${activeTab === 'overview' ? 'border-primary text-foreground' : 'border-transparent text-foreground/50 hover:text-foreground hover:border-border'}`}
