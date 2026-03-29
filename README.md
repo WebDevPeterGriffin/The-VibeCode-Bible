@@ -42,13 +42,38 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to explore
 
 ## 🧠 What's Inside?
 
+### 📚 10 In-Depth Lessons
 - **My Exact Setup** — the stack, extensions, folder structure, and settings I use daily
 - **The AGENTS.md System** — how I give AI agents permanent context so they stop making dumb mistakes
 - **Antigravity vs Claude Code** — when to use which one and why, from someone who uses both daily
 - **Honest AI Breakdown** — Claude, ChatGPT, Gemini — no fluff, just which one to use for what
 - **Real Project Walkthrough** — how I built Siteo in 3 days using this exact workflow
 - **Mistakes I Made** — the stuff that wasted my time so you don't repeat it
-- **Custom Skill Integrations** — A rapidly expanding library of viral AI agent workflows and modular `.cursorrules` that instantly enhance your developer stack.
+
+### 🤖 1,172 Bundled AI Agent Skills
+Pre-loaded and ready to use the second you clone. No extra installs needed.
+
+| Skill Pack | Files | What It Does |
+|---|---|---|
+| **Awesome CursorRules** | 1,063 | Hundreds of framework-specific `.cursorrules` for Next.js, React, Vue, Python, and more |
+| **Claude SEO** | 68 | 13 sub-skills and 7 subagents for full technical SEO automation |
+| **UI/UX Design Agent** | 31 | Deep design intelligence — 50 styles, 21 palettes, 50 font pairings |
+| **Honnibal Claude Skills** | 10 | Mutation testing, type tightening, hypothesis tests, contract docstrings |
+
+### ⚡ 6 Executable Agent Workflows
+Slash-command automation scripts your AI agent can run directly.
+
+| Workflow | Command | Steps |
+|---|---|---|
+| Project Cleanup | `/project-cleanup` | 8 |
+| New Feature Scaffold | `/new-feature` | 6 |
+| SEO Audit | `/seo-audit` | 7 |
+| Landing Page Generator | `/landing-page` | 7 |
+| Code Quality Review | `/code-review` | 7 |
+| Deploy Checklist | `/deploy-checklist` | 8 |
+
+### 🏗️ Production-Grade AGENTS.md
+A battle-tested system prompt that enforces Next.js 14, TypeScript strict mode, Tailwind v4, dark-mode-first aesthetics, semantic HTML, and conventional commits across every AI interaction.
 
 ---
 
