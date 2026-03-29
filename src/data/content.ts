@@ -401,17 +401,56 @@ export const content: Section[] = [
         slug: 'context-window-crash',
         title: '9. The Context Window Crash',
         blocks: [
-            { type: 'p', text: "Every developer eventually hits the wall: you've been vibe coding for 4 hours, and suddenly your AI agent hallucinates that your core `layout.tsx` file is missing, or it starts outputting code that contradicts things it just wrote." },
-            { type: 'callout', variant: 'skull', text: 'This is the context window crash. You dumped too many files, too many iterations, and too much history into an LLM, and its attention mechanism completely collapsed.' },
-            { type: 'h2', text: 'How to Prevent It' },
-            { type: 'p', text: "The solution is not 'buy a bigger context window.' Even models with 2-million token limits suffer from degraded recall when they are stuffed with irrelevant code. The solution is modularity and scope discipline." },
+            { type: 'p', text: "There is a moment every vibe coder hits. You have been building for hours, everything is flowing, features are shipping fast, and then suddenly the agent starts acting weird. It references a file you deleted two hours ago. It rewrites something it already wrote correctly. It hallucinates a function that does not exist. It contradicts itself in the same response." },
+            { type: 'p', text: "This is not a bug. This is not the tool being bad. This is the context window crash — and it will happen to you if you do not know how to prevent it." },
+            { type: 'callout', variant: 'skull', text: 'The context window crash is the number one reason long vibe coding sessions fall apart. You are not running out of tokens. You are running out of useful signal. The noise takes over and the agent loses the plot.' },
+            { type: 'h2', text: 'What is actually happening' },
+            { type: 'p', text: "Large language models do not have memory the way humans do. They have a context window — a finite amount of text they can hold in attention at once. Every file you load, every prompt you send, every response the agent generates gets added to that window." },
+            { type: 'p', text: "The problem is not just size. Even models with massive context windows — 200K tokens, 1 million tokens — suffer from degraded recall when that window is stuffed with irrelevant information. The model technically has access to everything but it starts paying less attention to the important parts because there is too much noise around them." },
+            { type: 'p', text: "After 3-4 hours of continuous building, your context window is full of: the files from features you finished hours ago, failed attempts the agent made and then corrected, your early scaffold prompts that are now irrelevant, component code that has since been refactored, and conversation history that adds nothing to the current task. All of that is diluting the signal." },
+            { type: 'callout', variant: 'fire', text: 'Think of it like a whiteboard. At the start of the session it is clean and the agent can see everything clearly. After 4 hours it is covered in half-erased diagrams, crossed out notes, and outdated plans. The important stuff is still there but it is buried.' },
+            { type: 'h2', text: 'How to prevent it' },
+            { type: 'p', text: "The solution is not a bigger context window. The solution is discipline about what goes into the context window in the first place. Here is exactly what I do." },
+            { type: 'h3', text: 'Start fresh after each feature' },
+            { type: 'p', text: "The moment a feature is working and committed, I clear the chat history. Not save it for later. Clear it. The agent does not need to know how we got here. It just needs to know where we are now. A fresh context with a clear task prompt outperforms a stale context with full history every single time." },
+            { type: 'callout', variant: 'zap', text: 'Pro tip: Treat each feature like a new shift. Clock out when it is done. Clock back in with a clean slate for the next one. The agent performs better and so do you.' },
+            { type: 'h3', text: 'Only load what the task needs' },
+            { type: 'p', text: "This is the discipline most people skip. When I write a prompt I specify exactly which files the agent needs to look at. Not the whole src folder. Not the whole components directory. The exact files the task touches." },
+            { type: 'p', text: "If I am fixing a bug in the GeneratorForm component I give it GeneratorForm.tsx and the relevant type file. That is it. Loading the entire codebase for a CSS change is like handing someone your entire filing cabinet when they asked for one document." },
+            { type: 'code', language: 'markdown', code: '// Bad — too much context for a simple task\n"Look at the whole src folder and fix the button styling"\n\n// Good — precise context for a precise task\n"Fix the button styling in src/components/GeneratorForm.tsx line 47.\nThe button should use the existing btn-primary class from globals.css.\nDo not touch anything else."' },
+            { type: 'h3', text: 'Keep components under 200 lines' },
+            { type: 'p', text: "This one changed how I structure projects. When a component grows past 200 lines the agent starts making mistakes editing it — missing closing tags, duplicating logic, losing track of the component state. Under 200 lines it handles it cleanly almost every time." },
+            { type: 'p', text: "If a component is growing too big, break it into smaller ones before asking the agent to edit it. Split the logic into a custom hook. Extract a sub-component. Make the pieces smaller and the agent gets smarter." },
+            { type: 'callout', variant: 'idea', text: 'My rule: if I have to scroll to see the full component, it is too big. Break it up before the agent touches it.' },
+            { type: 'h3', text: 'Use AGENTS.md to replace context' },
+            { type: 'p', text: "This is the most powerful prevention technique. AGENTS.md means the agent never needs you to re-explain your stack, your conventions, or your folder structure. That information is always there at the start of every fresh context. You never need to carry it through a long session because it is always available." },
+            { type: 'p', text: "Every time you catch yourself repeating something to the agent — a rule, a preference, a constraint — that thing belongs in AGENTS.md. Add it once and never repeat it again." },
+            { type: 'h2', text: 'What to do when it happens anyway' },
+            { type: 'p', text: "Sometimes you miss the warning signs and the crash happens mid-session. The agent is clearly confused, contradicting itself, or generating garbage. Here is how to recover without losing your work." },
+            {
+                type: 'ol', items: [
+                    'Stop immediately — do not keep prompting hoping it will correct itself. It will not.',
+                    'Do not accept any of the last response if it looks wrong — revert to your last commit.',
+                    'Clear the entire chat history.',
+                    'Write a fresh context prompt — your stack, the current state of the feature, what still needs to be done.',
+                    'Load only the files relevant to where you are now.',
+                    'Continue from the clean state.'
+                ]
+            },
+            { type: 'callout', variant: 'skull', text: 'The worst thing you can do when the agent crashes is keep going. Every confused response makes the context worse. Stop, clear, restart. It takes 5 minutes and saves you an hour of debugging hallucinated code.' },
+            { type: 'h2', text: 'The warning signs to watch for' },
+            { type: 'p', text: "Learn to recognize these early. If you catch them at the first sign you can clear and restart before any damage is done." },
             {
                 type: 'ul', items: [
-                    'Keep your components under 200 lines. If it grows bigger, the AI will struggle to edit it cleanly.',
-                    'Use the `-c` flag or clear your chat history the second a feature is finished. Never carry old context into a new sprint.',
-                    'Only load the files strictly necessary for the current task into the agent. Do not let it read the whole repository for a CSS change.'
+                    'The agent references a file or function you deleted or renamed',
+                    'It starts adding import statements for things that do not exist',
+                    'It rewrites something correctly and then contradicts it in the same response',
+                    'It asks clarifying questions about things you already told it earlier in the session',
+                    'The code quality suddenly drops noticeably compared to earlier in the session',
+                    'It adds console.logs or comments explaining basic things it understood fine before'
                 ]
-            }
+            },
+            { type: 'callout', variant: 'fire', text: 'You will develop an instinct for this after a few crashes. The agent starts feeling uncertain. The responses get hedgy. The code gets sloppy. Trust that instinct and clear the context before it gets worse.' },
         ]
     },
     {
@@ -419,11 +458,43 @@ export const content: Section[] = [
         slug: 'database-migrations',
         title: '10. Database Migrations on Auto-Pilot',
         blocks: [
-            { type: 'p', text: "Letting an AI agent write your frontend is high-leverage and low-risk. Letting an AI agent run `ALTER TABLE` scripts across your production Supabase database is terrifying." },
-            { type: 'p', text: "Agents do not understand the consequences of dropping a column or restructuring a relationship. If you tell an AI to 'fix the database so saving works', it might happily drop a table and recreate it, wiping 10,000 user records." },
-            { type: 'callout', variant: 'zap', text: 'Never let an AI directly execute a migration script. Always use an approval flag and review the raw SQL before it runs.' },
-            { type: 'h2', text: 'The Safe Data Workflow' },
-            { type: 'p', text: "When you need a schema change, prompt the AI to generate a `.sql` file but explicitly forbid it from running it. Then, review the script yourself, looking for destructive commands like `DROP` or data truncation. Once verified, run the migration manually via the Supabase Dashboard SQL editor." }
+            { type: 'p', text: "There is a clear line between the parts of your stack where you want the AI to move fast and the parts where you want it to slow down and ask permission. Frontend components, API routes, utility functions — move fast, break things, revert if needed. Your database is different." },
+            { type: 'p', text: "Letting an AI agent write your frontend is high-leverage and low-risk. If it makes a mistake you revert the file and try again. Letting an AI agent run ALTER TABLE scripts across your production Supabase database is a completely different situation. A bad migration does not revert cleanly. Dropped columns take user data with them. Restructured relationships can corrupt months of records in seconds." },
+            { type: 'callout', variant: 'skull', text: 'I have seen developers lose production data because they told the AI to "fix the database so saving works" without any guardrails. The agent helpfully dropped a table and recreated it from scratch. Clean schema, zero data. Do not let this happen to you.' },
+            { type: 'h2', text: 'Why agents are dangerous with databases' },
+            { type: 'p', text: "The problem is not that the AI writes bad SQL. It often writes perfectly correct SQL. The problem is that it does not understand consequences. It does not know that the users table has 50,000 rows. It does not know that the column it wants to drop is referenced by 12 other queries across your codebase. It does not know that the relationship it wants to restructure will orphan half your data." },
+            { type: 'p', text: "When you tell an AI to fix a bug in a React component it has full context — it can read the file, understand the logic, and make a targeted change. When you tell it to fix a database issue it is working with partial context. It sees the schema but not the data. It sees the query but not the downstream effects. That gap is where disasters happen." },
+            { type: 'callout', variant: 'fire', text: 'The agent is not malicious. It is just optimizing for making the immediate problem go away. Dropping and recreating a table absolutely fixes a schema mismatch. It also destroys all your data. The AI does not weigh those two outcomes the same way you do.' },
+            { type: 'h2', text: 'The safe migration workflow' },
+            { type: 'p', text: "This is the exact process I follow every time I need a schema change. It adds maybe 10 minutes to the process and has saved me from at least three potential disasters." },
+            {
+                type: 'ol', items: [
+                    'Tell the agent to generate the migration SQL as a file — never to execute it directly',
+                    'Read every line of the generated SQL before touching anything',
+                    'Look specifically for DROP, TRUNCATE, DELETE, or ALTER COLUMN statements',
+                    'Check if any dropped or renamed columns are referenced elsewhere in the codebase',
+                    'Test the migration on a staging environment or a local Supabase instance first',
+                    'Run it manually in the Supabase Dashboard SQL editor — never via the agent',
+                    'Verify the data is intact after running it before deploying any code changes'
+                ]
+            },
+            { type: 'code', language: 'markdown', code: '// The prompt that keeps you safe\n\n"Generate a SQL migration file for the following schema change.\nDo NOT execute it. Do NOT run any SQL commands.\nJust write the migration to a file called migrations/[timestamp]_description.sql\nand explain what each statement does and why.\n\nThe change I need: [describe the change]"\n' },
+            { type: 'callout', variant: 'zap', text: 'That single prompt — "Do NOT execute it" — is the most important guardrail you can add. Make it a habit on every single database task. No exceptions.' },
+            { type: 'h2', text: 'CLAUDE.md database boundaries' },
+            { type: 'p', text: "Add this to your CLAUDE.md file right now. Before you need it. This tells Claude Code to never touch your database directly regardless of what you ask it to do." },
+            { type: 'code', language: 'markdown', code: '## Database Rules — READ THIS FIRST\n- NEVER execute SQL directly against any database\n- NEVER run Supabase CLI migration commands without explicit approval\n- ALWAYS generate migration files, never run them\n- ALWAYS explain what each SQL statement does before generating it\n- Flag any statement that could result in data loss with a WARNING comment\n- The following are FORBIDDEN without explicit human confirmation:\n  - DROP TABLE\n  - DROP COLUMN\n  - TRUNCATE\n  - DELETE without a WHERE clause\n  - ALTER COLUMN that changes data type' },
+            { type: 'callout', variant: 'idea', text: 'Put the database rules at the TOP of your CLAUDE.md, not the bottom. The agent reads top to bottom. You want these rules to be the first thing it internalizes, not the last.' },
+            { type: 'h2', text: 'Additive migrations only in early development' },
+            { type: 'p', text: "In the early stages of a project before you have real user data, follow one rule: only additive migrations. Add columns, add tables, add indexes. Never remove or rename anything. If you need to restructure something, add the new structure and migrate the data before removing the old." },
+            { type: 'p', text: "This sounds overly cautious when you are on day two of a project with zero users. But the habit you build in development is the habit you carry into production. Developers who lose production data almost always say the same thing — I thought I was still in early development mode." },
+            { type: 'h2', text: 'Always have a backup before any migration' },
+            { type: 'p', text: "Supabase makes this easy. Before any schema change, go to the Supabase dashboard, open your project, and download a backup. Takes two minutes. If something goes wrong you have a restore point." },
+            { type: 'p', text: "I add this to my pre-migration checklist and I do not run any migration without checking it off. Not because I expect something to go wrong every time — but because the one time something goes wrong and you do not have a backup is the time it actually matters." },
+            { type: 'callout', variant: 'skull', text: '"I thought the migration was safe" is the last thing you want to be saying to a client whose data just disappeared. Backup first. Every time. Non-negotiable.' },
+            { type: 'h2', text: 'When the agent does try to run SQL directly' },
+            { type: 'p', text: "If you are using Claude Code and you see it attempting to execute SQL — either through the Supabase CLI, a direct database connection, or any other method — stop it immediately. Do not let it finish. Review what it was trying to do, add the restriction to your CLAUDE.md, and start the task fresh with the guardrails in place." },
+            { type: 'p', text: "This is not a criticism of the tool. It is doing what you asked it to do as efficiently as possible. The responsibility for setting boundaries is yours. The tools in this bible — AGENTS.md, CLAUDE.md, skill files — exist precisely so you can set those boundaries once and never have to think about them again." },
+            { type: 'callout', variant: 'fire', text: 'The best developers I know are not the ones who never make mistakes. They are the ones who build systems that make certain mistakes impossible. Database guardrails in CLAUDE.md is exactly that kind of system.' },
         ]
     },
     {
@@ -431,17 +502,35 @@ export const content: Section[] = [
         slug: 'beating-generic-ai-look',
         title: '11. Beating the Generic AI Look',
         blocks: [
-            { type: 'p', text: "You know an AI built a site the second you see it: `bg-blue-500`, standard pill buttons, generic box shadows, and Arial font. It's the 'Tailwind Default' aesthetic, and it screams low-effort." },
-            { type: 'h2', text: 'Forcing Premium Aesthetics' },
-            { type: 'p', text: "To break the AI out of this trap, you must inject hardcore design constraints into your system prompts or `.cursorrules`." },
-            {
-                type: 'ul', items: [
-                    'Ban standard colors. Tell the AI `NEVER use standard tailwind colors like blue-500 or red-400. ONLY use Zinc, Slate, Neutral, and custom hex codes.`',
-                    'Force Glassmorphism: Instruct the agent to use `backdrop-blur-md bg-white/5` instead of solid backgrounds for cards.',
-                    'Micro-interactions: Always tell the AI to wrap interactive elements in `transition-all duration-300 active:scale-95`.'
-                ]
-            },
-            { type: 'callout', variant: 'fire', text: 'This is why the AGENTS.md file in the root of this repo explicitly bans boring UI. You set the rules once, and the AI follows them forever.' }
+            { type: 'p', text: "You can tell an AI built a site the second you see it. The buttons are pill shaped with bg-blue-500. The cards have the same rounded-xl shadow-md combo. The font is Inter at font-medium. The spacing is perfectly even and completely soulless. It is technically correct and visually forgettable." },
+            { type: 'p', text: "This is not the AI being bad at design. It is the AI being statistically average. It was trained on millions of websites and it learned what the average website looks like. When you give it no design constraints it produces the mean. The mean is boring." },
+            { type: 'callout', variant: 'skull', text: 'The generic AI look is not a tool problem. It is a prompt problem. The AI will produce whatever aesthetic you give it constraints for. Give it no constraints and you get the Tailwind default. Give it strong constraints and you get something that looks like you actually care.' },
+            { type: 'h2', text: 'The root cause' },
+            { type: 'p', text: "When the agent has no design system to reference it falls back to what it knows statistically works — safe colors, safe spacing, safe components. Blue-500 because blue reads as trustworthy. Rounded-xl because it looks modern. Shadow-md because it adds depth. All technically correct. All immediately recognizable as AI output." },
+            { type: 'p', text: "The fix is not to ask it to 'make it look better' or 'make it more premium'. Those are vague instructions and the agent will interpret them as vague. The fix is to give it a specific design system with specific rules it cannot deviate from." },
+            { type: 'h2', text: 'Ban the defaults first' },
+            { type: 'p', text: "The first thing I add to any AGENTS.md for a project with real UI is a list of banned defaults. Things the agent is not allowed to use no matter what. This forces it out of the statistical mean immediately." },
+            { type: 'code', language: 'markdown', code: '## Design Rules — UI\n\n### BANNED — never use these\n- bg-blue-500, bg-red-400, bg-green-500 or any standard Tailwind color for primary UI\n- rounded-full on buttons (pill buttons look generic)\n- shadow-md or shadow-lg as the only depth technique\n- border-gray-200 for dividers\n- text-gray-500 for secondary text\n- font-medium as the only weight variation\n- Any gradient that goes from blue to purple\n\n### REQUIRED — always use these\n- Color palette: Zinc, Slate, Neutral scales only — or custom hex values\n- Primary accent: define one custom color as a CSS variable --color-accent\n- Depth: use backdrop-blur and bg-white/5 for cards instead of solid fills\n- Borders: use border-white/10 for subtle borders on dark backgrounds\n- Typography: mix font-light and font-bold — avoid the middle weights' },
+            { type: 'callout', variant: 'fire', text: 'Banning the defaults is more powerful than specifying what to use. The agent is creative when it cannot fall back on the safe options. Constraints produce better design than suggestions.' },
+            { type: 'h2', text: 'Force glassmorphism for cards' },
+            { type: 'p', text: "Solid background cards are the most recognizable sign of generic AI UI. The moment you switch to glassmorphism — semi-transparent backgrounds with backdrop blur — the whole product feels more considered." },
+            { type: 'code', language: 'markdown', code: '## Card Pattern — always use this\nNever use solid background cards.\nAlways use: backdrop-blur-md bg-white/5 border border-white/10 rounded-xl\n\nFor hover states: hover:bg-white/10 transition-all duration-300\nFor active states: active:scale-95 transition-transform duration-150' },
+            { type: 'p', text: "Add this pattern to your AGENTS.md and every card the agent generates will use it automatically. You stop fighting the AI about card styles on every single prompt." },
+            { type: 'h2', text: 'Micro-interactions on everything interactive' },
+            { type: 'p', text: "The difference between a site that feels premium and one that feels flat is almost always micro-interactions. Buttons that scale slightly on click. Links that transition smoothly. Inputs that highlight on focus. These take the agent about 10 extra tokens to add if you make them a rule." },
+            { type: 'code', language: 'markdown', code: '## Interaction Rules\n- Every button: transition-all duration-200 active:scale-95\n- Every link: transition-colors duration-150\n- Every card with hover: hover:scale-[1.02] transition-transform duration-200\n- Every input: focus:ring-2 focus:ring-accent/50 transition-all duration-150\n- Every modal or sheet: animate-in fade-in slide-in-from-bottom-4 duration-300' },
+            { type: 'callout', variant: 'zap', text: 'Pro tip: Add the interaction rules to your AGENTS.md under a section called "Motion Rules". Once it is there the agent adds transitions and animations to every interactive element automatically. Your UI starts feeling alive without you thinking about it.' },
+            { type: 'h2', text: 'Typography that does not look auto-generated' },
+            { type: 'p', text: "Generic AI typography uses one font, one or two weights, and predictable size scaling. Premium typography mixes weights deliberately, uses tracking and leading intentionally, and creates clear visual hierarchy without being mechanical about it." },
+            { type: 'code', language: 'markdown', code: '## Typography Rules\n- Headlines: font-bold tracking-tight leading-none — never use the default leading\n- Subheadlines: font-light text-foreground/70 — contrast against the bold headline\n- Body: font-normal leading-relaxed — generous line height for readability\n- Labels and captions: text-xs font-medium uppercase tracking-widest\n- NEVER use font-medium for headlines — it looks auto-generated\n- NEVER use the same weight for more than two consecutive text elements' },
+            { type: 'h2', text: 'The one prompt that fixes everything' },
+            { type: 'p', text: "If you do not want to set up all these rules right now and you just need something better than the default for a specific component, this prompt works surprisingly well:" },
+            { type: 'code', language: 'markdown', code: 'Build [component]. \n\nDesign constraints:\n- Dark background, zinc/slate palette only, no standard Tailwind colors\n- Glassmorphism cards: backdrop-blur-md bg-white/5 border border-white/10\n- Micro-interactions on all interactive elements: transition-all duration-200 active:scale-95\n- Typography: mix font-bold tracking-tight for headlines with font-light for supporting text\n- No pill buttons, no shadow-md, no border-gray-200\n- Should look like it was designed by a human who cares, not generated by default settings' },
+            { type: 'callout', variant: 'idea', text: 'That last line — "designed by a human who cares, not generated by default settings" — is not fluffy language. It actually shifts the model away from the statistical mean. It has been part of my prompts for months and the quality difference is real.' },
+            { type: 'h2', text: 'The AGENTS.md design system' },
+            { type: 'p', text: "The most powerful version of all of this is combining everything above into a design system section in your AGENTS.md. Write it once at the start of a project and every single component the agent generates for the rest of the project follows it automatically. No reminding. No repeating. No fighting about pill buttons." },
+            { type: 'p', text: "This is exactly why the AGENTS.md file in this repo has a dedicated design section. The agents in this codebase cannot produce generic UI even if they tried. The rules make it structurally impossible." },
+            { type: 'callout', variant: 'fire', text: 'One hour writing a proper design system in AGENTS.md saves you from arguing with the agent about UI on every single prompt for the rest of the project. Do it on day one.' },
         ]
     },
     {
@@ -449,10 +538,43 @@ export const content: Section[] = [
         slug: 'securing-stripe',
         title: '12. Securing Stripe & Webhooks',
         blocks: [
-            { type: 'p', text: "Agents are incredible at wiring up a Stripe Checkout session. They are terrible at securing the resulting webhooks. AI loves to take shortcuts, which often means trusting the client to confirm payment instead of verifying cryptographic signatures." },
-            { type: 'h2', text: 'The Danger Zone' },
-            { type: 'p', text: "A common AI mistake is writing a `POST` route that accepts `req.body.status === 'succeeded'` and immediately upgrades a user in the database. Anyone can hit that endpoint with Postman and get your premium tier for free." },
-            { type: 'callout', variant: 'zap', text: 'When prompting for payment logic, be explicitly paranoid: "Write a Stripe webhook handler. You MUST verify the Stripe-Signature header using the endpoint secret. Do not trust the raw payload."' }
+            { type: 'p', text: "Stripe integration is one of those tasks where the AI looks incredibly competent right up until the moment it gets you hacked. It will scaffold a checkout session, wire up the success redirect, update your database, and send a confirmation email — all correctly. And then it will leave your webhook endpoint completely unsecured and one Postman request away from giving anyone your premium tier for free." },
+            { type: 'p', text: "This is not an edge case. It is one of the most common security mistakes in AI-generated payment code. The agent optimizes for making the happy path work. Security is not part of the happy path." },
+            { type: 'callout', variant: 'skull', text: 'I have reviewed codebases where the entire payment flow was working perfectly in testing and completely exploitable in production. The checkout worked. The webhook did not verify the signature. Anyone who knew the endpoint URL could upgrade any account for free.' },
+            { type: 'h2', text: 'What the AI gets wrong' },
+            { type: 'p', text: "The most common mistake is trusting the request body instead of verifying the cryptographic signature. The agent writes something like this:" },
+            { type: 'code', language: 'typescript', code: '// What the AI often generates — NEVER do this\nexport async function POST(req: Request) {\n  const body = await req.json();\n  \n  if (body.type === "checkout.session.completed") {\n    if (body.data.object.payment_status === "paid") {\n      await upgradeUser(body.data.object.customer_email);\n    }\n  }\n  \n  return Response.json({ received: true });\n}' },
+            { type: 'p', text: "This code works perfectly in development. It processes real Stripe events correctly. And it will also process completely fake events sent by anyone who knows your webhook URL. There is no verification. The endpoint trusts whatever JSON body it receives." },
+            { type: 'callout', variant: 'fire', text: 'That endpoint is not a webhook handler. It is a free upgrade button. Anyone can POST { type: "checkout.session.completed", data: { object: { payment_status: "paid", customer_email: "victim@example.com" } } } and your code will upgrade that account instantly.' },
+            { type: 'h2', text: 'The correct implementation' },
+            { type: 'p', text: "Every Stripe webhook request includes a Stripe-Signature header. Stripe uses your endpoint secret to generate a cryptographic signature of the raw request body. You verify that signature before trusting anything in the payload. If the signature does not match, the request did not come from Stripe." },
+            { type: 'code', language: 'typescript', code: '// The correct way — always verify the signature\nimport Stripe from "stripe";\nimport { headers } from "next/headers";\n\nconst stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);\n\nexport async function POST(req: Request) {\n  const body = await req.text(); // raw text, not json\n  const signature = headers().get("Stripe-Signature");\n\n  if (!signature) {\n    return new Response("No signature", { status: 400 });\n  }\n\n  let event: Stripe.Event;\n\n  try {\n    event = stripe.webhooks.constructEvent(\n      body,\n      signature,\n      process.env.STRIPE_WEBHOOK_SECRET!\n    );\n  } catch (err) {\n    // Signature verification failed — reject immediately\n    return new Response("Invalid signature", { status: 400 });\n  }\n\n  // Now you can trust the event\n  if (event.type === "checkout.session.completed") {\n    const session = event.data.object as Stripe.Checkout.Session;\n    await upgradeUser(session.customer_email!);\n  }\n\n  return Response.json({ received: true });\n}' },
+            { type: 'callout', variant: 'zap', text: 'Two critical details: use req.text() not req.json() — you need the raw body for signature verification. And use a separate STRIPE_WEBHOOK_SECRET from your STRIPE_SECRET_KEY — they are different keys.' },
+            { type: 'h2', text: 'The prompt that forces the AI to do it right' },
+            { type: 'p', text: "The standard prompt for Stripe integration does not produce secure webhook code. You have to be explicitly paranoid in the prompt. Here is exactly what I use:" },
+            { type: 'code', language: 'markdown', code: 'Build a Stripe webhook handler for Next.js 14 App Router.\n\nSECURITY REQUIREMENTS — these are non-negotiable:\n- MUST verify the Stripe-Signature header using stripe.webhooks.constructEvent()\n- MUST read the raw body with req.text() — never req.json() for webhooks\n- MUST use STRIPE_WEBHOOK_SECRET env variable — separate from STRIPE_SECRET_KEY\n- MUST return 400 immediately if signature verification fails\n- MUST NOT trust any data from the request body before signature is verified\n- NEVER write code that upgrades a user based on unverified request body data\n\nHandle these events:\n- checkout.session.completed — upgrade user to pro\n- customer.subscription.deleted — downgrade user to free\n\nFiles: src/app/api/webhooks/stripe/route.ts' },
+            { type: 'h2', text: 'Add it to CLAUDE.md' },
+            { type: 'p', text: "Add a payment security section to your CLAUDE.md so the agent never generates insecure payment code regardless of how the task is phrased." },
+            { type: 'code', language: 'markdown', code: '## Payment Security Rules\n- NEVER trust webhook payloads without verifying the Stripe-Signature header\n- ALWAYS use stripe.webhooks.constructEvent() before processing any webhook\n- ALWAYS use req.text() for webhook route body parsing, never req.json()\n- NEVER upgrade or modify user accounts based on client-side payment confirmation\n- Payment status must ALWAYS be verified server-side via webhook, never via redirect params\n- The success redirect URL is for UX only — never use it to trigger account changes' },
+            { type: 'callout', variant: 'idea', text: 'That last rule is important. The Stripe success redirect URL can be manipulated. Someone can visit yourapp.com/success?session_id=fake and if your code reads that URL to upgrade the account you have the same problem. All account changes happen in the webhook. Never in the redirect.' },
+            { type: 'h2', text: 'Testing webhooks locally' },
+            { type: 'p', text: "You cannot test webhooks by triggering real payments in development. Use the Stripe CLI to forward events to your local server. The agent often skips this in its instructions so here is the actual workflow." },
+            { type: 'code', language: 'bash', code: '# Install Stripe CLI\nbrew install stripe/stripe-cli/stripe\n\n# Login\nstripe login\n\n# Forward webhooks to your local server\nstripe listen --forward-to localhost:3000/api/webhooks/stripe\n\n# In a separate terminal, trigger a test event\nstripe trigger checkout.session.completed' },
+            { type: 'p', text: "The CLI will print a webhook signing secret when you run stripe listen. Use that as your STRIPE_WEBHOOK_SECRET in your .env.local for development. It is different from your production webhook secret." },
+            { type: 'callout', variant: 'fire', text: 'Test the failure case too. Send a request to your webhook endpoint without the signature header and make sure it returns 400. If your endpoint processes unsigned requests in testing it will process them in production.' },
+            { type: 'h2', text: 'The security checklist before going live' },
+            {
+                type: 'ol', items: [
+                    'Stripe-Signature header is verified on every webhook request',
+                    'Using req.text() not req.json() for raw body parsing',
+                    'STRIPE_WEBHOOK_SECRET is set in production environment variables',
+                    'Webhook endpoint returns 400 for invalid signatures',
+                    'No account changes happen based on redirect URL parameters',
+                    'Tested locally with Stripe CLI including the failure case',
+                    'Webhook endpoint is not behind authentication middleware — Stripe cannot authenticate'
+                ]
+            },
+            { type: 'callout', variant: 'skull', text: 'That last point catches people. If your webhook route is behind your auth middleware it will reject Stripe requests because they do not have a session cookie. Add your webhook route to the public routes list in your middleware config.' },
         ]
     },
     {
@@ -460,11 +582,52 @@ export const content: Section[] = [
         slug: 'hallucinated-apis',
         title: '13. Handling Hallucinated APIs',
         blocks: [
-            { type: 'p', text: "You ask an AI to fetch data from a third-party service. It writes a beautifully typed, concurrent fetching function using `/v3/api/advanced-endpoint`. You run it. 404 Not Found. You check the docs. That endpoint does not exist. It never existed." },
-            { type: 'p', text: "AI models are trained on internet data up to a cutoff point, and when they do not know the exact route, they confidently guess what the route *should* be based on REST conventions." },
-            { type: 'h2', text: 'The "Verify Docs First" Protocol' },
-            { type: 'p', text: "Before you ask an agent to integrate a tool like Resend, loops, or a random API — feed it the docs first. Use a command like `Fetch https://resend.com/docs/api-reference/emails/send-email and base your code strictly on this schema.`" },
-            { type: 'callout', variant: 'idea', text: 'If an API is hallucinating, force the agent to use `curl` from its terminal to hit the endpoint and read the error message so it naturally corrects itself.' }
+            { type: 'p', text: "You ask the agent to integrate a third party API. It writes clean, well typed, beautifully structured code. You run it. 404 Not Found. You check the actual documentation. The endpoint it used does not exist. It never existed. The agent invented it." },
+            { type: 'p', text: "This is one of the most frustrating experiences in vibe coding because everything looks right. The TypeScript types are correct. The fetch logic is clean. The error handling is solid. The only problem is that the API endpoint is completely made up." },
+            { type: 'callout', variant: 'skull', text: 'AI models are trained on data up to a cutoff date. APIs change constantly — endpoints get deprecated, renamed, versioned, restructured. When the model does not know the exact current endpoint it does not say "I am not sure". It confidently invents what the endpoint should logically be based on REST conventions. And it is wrong.' },
+            { type: 'h2', text: 'Why this happens' },
+            { type: 'p', text: "The model has seen thousands of API integrations in its training data. It knows what a well-structured REST API looks like. It knows that payment APIs usually have a /charges endpoint, that email APIs usually have a /send endpoint, that auth APIs usually have a /token endpoint." },
+            { type: 'p', text: "When it does not have reliable information about the specific API you are using — either because the API is newer than its training data, because the API changed after the cutoff, or because the API is niche enough that it was barely represented in training — it pattern-matches to what it knows and fills in the gaps with confident guesses." },
+            { type: 'p', text: "The guesses are structurally plausible. They follow REST conventions. They look like real endpoints. They just do not exist." },
+            { type: 'callout', variant: 'fire', text: 'The most dangerous hallucinations are the ones that are almost right. An endpoint that is completely wrong is easy to catch. An endpoint that is one version number off — /v2/ instead of /v3/ — can waste hours of debugging.' },
+            { type: 'h2', text: 'The Verify Docs First protocol' },
+            { type: 'p', text: "The fix is simple but requires discipline: never ask the agent to integrate an API without giving it the actual current documentation first. Not from memory. Not from its training data. The actual docs, fetched live." },
+            { type: 'code', language: 'markdown', code: '// Before any API integration, always do this first\n\n"Before writing any code, fetch the documentation at this URL and read it:\nhttps://resend.com/docs/api-reference/emails/send-email\n\nBase ALL code strictly on what you find in those docs.\nDo not use any endpoints, parameters, or response shapes\nthat are not explicitly documented at that URL.\nIf something is unclear, tell me — do not guess."' },
+            { type: 'p', text: "That last line is critical. Telling the agent to flag uncertainty instead of guessing changes its behavior significantly. It will still sometimes guess, but the explicit instruction to not guess reduces hallucinations noticeably." },
+            { type: 'callout', variant: 'zap', text: 'Pro tip: For APIs you use frequently, paste the relevant documentation section directly into your skill file. The agent reads it every session and never needs to guess about endpoints it uses regularly.' },
+            { type: 'h2', text: 'Using curl to self-correct' },
+            { type: 'p', text: "When you are using Claude Code and an API call is returning unexpected errors, tell the agent to test the endpoint directly with curl before trying to fix the code. This forces it to get real feedback from the actual API instead of reasoning from potentially incorrect assumptions." },
+            { type: 'code', language: 'markdown', code: '"The API call in src/lib/resend.ts is returning a 422 error.\nBefore changing any code, use curl to hit the endpoint directly\nand read the actual error response. Then fix the code based\non what the API actually returns, not what you expect it to return."' },
+            { type: 'p', text: "When the agent runs curl and reads the real error message it self-corrects almost immediately. The actual API response contains the real parameter names, the real required fields, and the real error descriptions. This is always more reliable than the agent reasoning about what might be wrong." },
+            { type: 'h2', text: 'The APIs most likely to hallucinate' },
+            { type: 'p', text: "Not all APIs are equal hallucination risks. Here is my rough ranking of what to watch out for:" },
+            {
+                type: 'ul', items: [
+                    'Any API that released a major version after 2024 — the model may know v1 but not v2 or v3',
+                    'Niche or less popular APIs — less training data means more guessing',
+                    'APIs that recently rebranded — the model knows the old name and old endpoints',
+                    'Internal or private APIs — the model has never seen these and will invent everything',
+                    'APIs with complex authentication flows — OAuth scopes and token exchanges get hallucinated constantly',
+                    'Supabase edge functions and newer Supabase features — the platform evolves fast'
+                ]
+            },
+            { type: 'h2', text: 'Building a personal API reference' },
+            { type: 'p', text: "For APIs I integrate regularly — Supabase, Resend, Stripe, OpenAI — I keep a docs folder in my projects with the key reference pages saved as markdown files. When I need the agent to use one of these APIs I point it at the local file instead of asking it to remember." },
+            { type: 'code', language: 'markdown', code: 'src/\n  docs/\n    resend-send-email.md      — copied from Resend docs\n    supabase-rls-patterns.md  — common RLS policy patterns\n    stripe-webhook-events.md  — webhook event types I use\n    openai-chat-params.md     — current chat completion params' },
+            { type: 'p', text: "This sounds like extra work but it pays off immediately. The agent never hallucinates endpoints for APIs that have a local docs file. It reads the file, uses exactly what is documented, and the integration works first time." },
+            { type: 'callout', variant: 'idea', text: 'Add the docs folder to your AGENTS.md: "For any API integration, check src/docs/ first for reference documentation before writing any code." One line in AGENTS.md and the agent always looks there first.' },
+            { type: 'h2', text: 'What to do when you catch a hallucination' },
+            { type: 'p', text: "When you hit a 404 or an unexpected error on a third party API call, do not just tell the agent it is wrong and ask it to fix it. That often produces another confident hallucination. Instead give it the actual information it needs." },
+            {
+                type: 'ol', items: [
+                    'Find the actual current documentation for the endpoint',
+                    'Paste the relevant section directly into the prompt',
+                    'Tell it explicitly: "The endpoint you used does not exist. Here is the actual documentation. Rewrite the integration using only what is in these docs."',
+                    'If the error is unclear, have it run curl first to get the real API response',
+                    'Add the correct endpoint to your local docs file so it never happens again'
+                ]
+            },
+            { type: 'callout', variant: 'skull', text: 'Never just say "that is wrong, fix it" when an API call fails. The agent will generate another confident wrong answer. Give it the real documentation. Make it read the source of truth before touching the code.' },
         ]
     },
     {
@@ -472,18 +635,44 @@ export const content: Section[] = [
         slug: 'scale-vs-speed',
         title: '14. Prompting for Scale vs Speed',
         blocks: [
-            { type: 'p', text: "If you tell an AI `Build a working chat app`, it will stuff the database logic, the frontend UI, the state management, and the API calls into one gigantic monolithic 800-line `page.tsx` file." },
-            { type: 'callout', variant: 'skull', text: 'Speed prompting gets you a prototype. Scale prompting gets you a product.' },
-            { type: 'p', text: "To build something that lasts longer than the weekend, you must force the AI to execute sequentially:" },
+            { type: 'p', text: "There are two modes of vibe coding. The first is speed mode — you want something working as fast as possible, you do not care about the architecture, you just need to see it run. The second is scale mode — you are building something you intend to maintain, extend, and eventually ship to real users." },
+            { type: 'p', text: "The mistake most developers make is using speed mode prompts for scale mode projects. You tell the agent 'build a working chat app' and it does exactly that — it builds a working chat app. All the database logic, all the UI, all the state management, all the API calls, stuffed into one 800 line page.tsx file. It works. You cannot maintain it." },
+            { type: 'callout', variant: 'skull', text: 'Speed prompting gets you a prototype. Scale prompting gets you a product. They require completely different prompt structures and the agent will not choose scale mode by default — it always defaults to speed.' },
+            { type: 'h2', text: 'What speed prompting produces' },
+            { type: 'p', text: "Speed prompting is a single high-level instruction with no architectural constraints. The agent makes every structural decision itself and it optimizes for working code delivered fast, not maintainable code delivered thoughtfully." },
+            { type: 'code', language: 'markdown', code: '// Speed prompt — produces working but unmaintainable code\n"Build a chat app where users can send messages in real time.\nUse Supabase for the backend and Next.js for the frontend."' },
+            { type: 'p', text: "What you get: a single page component that fetches data, manages state, handles subscriptions, renders the UI, and contains all the business logic in one place. It works on day one. On day thirty when you need to add features, change the data model, or fix a bug, you are untangling a 800 line file where everything is coupled to everything else." },
+            { type: 'h2', text: 'What scale prompting looks like' },
+            { type: 'p', text: "Scale prompting breaks the same task into sequential steps with explicit architectural boundaries. You do not ask for the whole thing at once. You build it in layers, each layer with clear separation from the others." },
+            { type: 'p', text: "The key insight is that you are not just breaking the work into smaller chunks — you are forcing the agent to think about the architecture before it writes any implementation. By defining types first, you create a contract that every subsequent piece of code has to conform to." },
+            { type: 'h2', text: 'The four layer sequence' },
+            { type: 'p', text: "This is the sequence I use for every feature that needs to last beyond the initial build. It takes longer upfront and produces code that is dramatically easier to work with long term." },
+            { type: 'code', language: 'markdown', code: '// Layer 1 — Types first, always\n"Define the TypeScript interfaces for the chat feature.\nNo implementation. Types only.\n\nCreate in src/types/chat.ts:\n- Message: id, content, userId, channelId, createdAt, readBy\n- Channel: id, name, memberIds, lastMessage, createdAt\n- ChatUser: id, name, avatarUrl, isOnline, lastSeen\n\nThink carefully about the relationships. These types\nwill be used by every other layer."' },
+            { type: 'code', language: 'markdown', code: '// Layer 2 — UI shells with no logic\n"Build the UI components for chat. No data fetching.\nNo state management. No Supabase calls. Just the visual shells\nwith the correct TypeScript props using the types from src/types/chat.ts.\n\nComponents needed:\n- MessageBubble.tsx — accepts Message prop\n- MessageList.tsx — accepts Message[] prop\n- MessageInput.tsx — accepts onSend callback\n- ChannelHeader.tsx — accepts Channel prop\n- OnlineIndicator.tsx — accepts isOnline boolean"' },
+            { type: 'code', language: 'markdown', code: '// Layer 3 — Data access in isolation\n"Build the database access layer for chat.\nNo UI. No React. Pure async functions only.\n\nCreate src/lib/chat.ts with these functions:\n- getMessages(channelId: string): Promise<Message[]>\n- sendMessage(content: string, channelId: string, userId: string): Promise<Message>\n- subscribeToChannel(channelId: string, onMessage: (msg: Message) => void): () => void\n- markAsRead(messageId: string, userId: string): Promise<void>\n\nUse Supabase. Handle errors. Return typed responses."' },
+            { type: 'code', language: 'markdown', code: '// Layer 4 — Wire it together\n"Build the chat page that wires the components and data layer together.\n\nFile: src/app/chat/[channelId]/page.tsx\n\nImport components from src/components/\nImport data functions from src/lib/chat.ts\nImport types from src/types/chat.ts\n\nThe page manages state and subscriptions only.\nNo inline SQL. No direct Supabase calls. No business logic.\nEverything goes through src/lib/chat.ts."' },
+            { type: 'callout', variant: 'fire', text: 'That last instruction — "no inline SQL, no direct Supabase calls, everything goes through the lib file" — is what keeps the page component clean. Without it the agent will start mixing data access into the component the moment it feels convenient.' },
+            { type: 'h2', text: 'Why types first is non-negotiable' },
+            { type: 'p', text: "Starting with types is the single most important part of scale prompting. When the types exist before any implementation, every subsequent prompt has a contract to conform to. The agent cannot invent a different shape for Message in the database layer because Message is already defined in types.ts." },
+            { type: 'p', text: "Without types first, each layer invents its own shape for the same data. The database returns one thing, the component expects another, and you spend hours writing transformation functions to bridge the gap. I have been on projects where 20% of the codebase was just data transformation code caused by inconsistent types across layers." },
+            { type: 'callout', variant: 'idea', text: 'Types are a forcing function for architectural consistency. Define them first, add them to AGENTS.md as the source of truth, and tell the agent to never create new types that duplicate existing ones. The whole codebase stays coherent.' },
+            { type: 'h2', text: 'When to use speed mode vs scale mode' },
+            { type: 'p', text: "Speed mode is not always wrong. Knowing when to use each is part of the skill." },
             {
-                type: 'ol', items: [
-                    'First, define the strictly typed interfaces in `types.ts`.',
-                    'Second, scaffold the blank UI components so they compile visually.',
-                    'Third, write the isolated database access logic.',
-                    'Fourth, wire the state and components together.'
+                type: 'ul', items: [
+                    'Speed mode — prototypes, demos, proof of concepts, throwaway experiments, internal tools nobody else will touch',
+                    'Speed mode — when you need to validate an idea before committing to building it properly',
+                    'Scale mode — anything with real users, anything you will maintain for more than a month, anything with a team',
+                    'Scale mode — features that touch payments, auth, or user data regardless of project size',
+                    'Scale mode — any feature you know will need to change or extend over time'
                 ]
             },
-            { type: 'p', text: "By breaking the prompt down, you force the AI to generate a clean, modular architecture that you can actually maintain." }
+            { type: 'p', text: "The trap is building something in speed mode, deciding it is worth keeping, and then trying to scale it without refactoring. Speed mode code does not scale gracefully. If you decide something is worth keeping, rebuild it in scale mode before adding features. It is faster than trying to untangle speed mode architecture mid-product." },
+            { type: 'callout', variant: 'zap', text: 'Pro tip: Add a comment at the top of speed mode files — "// PROTOTYPE — not for production". When you come back to it later you know exactly what you are dealing with and you are not tempted to build on top of it.' },
+            { type: 'h2', text: 'The refactor prompt' },
+            { type: 'p', text: "If you already have a speed mode file that you need to convert to scale mode, this prompt works well. It forces the agent to extract and separate without changing the behavior." },
+            { type: 'code', language: 'markdown', code: '"Refactor src/app/chat/page.tsx into a proper layered architecture.\nDo NOT change any functionality. Only restructure.\n\nExtract:\n1. All TypeScript interfaces → src/types/chat.ts\n2. All Supabase queries and subscriptions → src/lib/chat.ts\n3. Each distinct UI section → its own component in src/components/\n4. Leave src/app/chat/page.tsx as a thin orchestration layer only\n\nAfter refactoring, the page.tsx should have zero direct database calls\nand zero inline type definitions."' },
+            { type: 'callout', variant: 'skull', text: 'Always commit before running a refactor prompt. The agent will touch a lot of files at once. If anything breaks you need a clean rollback point. A refactor that breaks behavior is worse than the messy original.' },
         ]
     },
     {
