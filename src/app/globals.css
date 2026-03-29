@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #0a0a0a;
+  --color-foreground: #ededed;
+  --color-muted: #171717;
+  --color-border: #262626;
+  --color-primary: #38bdf8;
+  --color-fire: #ef4444;    /* For 🔥 callout */
+  --color-skull: #a8a29e;   /* For 💀 callout */
+  --color-idea: #fbbf24;    /* For 💡 callout */
+  --color-zap: #a855f7;     /* For ⚡ callout */
+}
+
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    @apply antialiased;
+  }
+}
