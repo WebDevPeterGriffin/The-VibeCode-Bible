@@ -48,8 +48,74 @@ async function getWorkflows() {
     return workflows.sort((a, b) => a.cmd.localeCompare(b.cmd));
 }
 
+export interface SkillEntry {
+    filename: string;
+    path: string;
+    type: string;
+}
+
+function getSkillFiles(dirPath: string, limit: number): SkillEntry[] {
+    const fullPath = path.join(process.cwd(), dirPath);
+    if (!fs.existsSync(fullPath)) return [];
+
+    try {
+        const entries: SkillEntry[] = [];
+        const readDir = (currentPath: string) => {
+            if (entries.length >= limit) return;
+            const items = fs.readdirSync(currentPath, { withFileTypes: true });
+            for (const item of items) {
+                if (entries.length >= limit) break;
+
+                const itemPath = path.join(currentPath, item.name);
+                if (item.isDirectory()) {
+                    if (item.name === 'node_modules' || item.name === '.git') continue;
+                    readDir(itemPath);
+                } else if (item.isFile()) {
+                    const name = item.name.toLowerCase();
+                    if (name.endsWith('.md') || name.endsWith('.mdc') || name.endsWith('.py')) {
+                        if (name === 'readme.md' || name === 'license.md' || name === 'skill.md') continue;
+
+                        const relPath = path.relative(process.cwd(), itemPath).replace(/\\/g, '/');
+                        entries.push({
+                            filename: item.name,
+                            path: relPath,
+                            type: name.split('.').pop() || 'md'
+                        });
+                    }
+                }
+            }
+        };
+
+        readDir(fullPath);
+        return entries;
+    } catch (e) {
+        console.error("Error reading skills dir", dirPath, e);
+        return [];
+    }
+}
+
+function getCombinedSkillFiles(dirs: string[], limit: number = 3000): SkillEntry[] {
+    const entries: SkillEntry[] = [];
+    for (const d of dirs) {
+        if (entries.length >= limit) break;
+        const subFiles = getSkillFiles(d, limit - entries.length);
+        entries.push(...subFiles);
+    }
+    return entries.sort((a, b) => a.filename.localeCompare(b.filename));
+}
+
+async function getSkillsMap() {
+    return {
+        uiux: getCombinedSkillFiles(['.agent/skills/ui-ux-pro-max', '.claude/skills/ui-ux-pro-max']),
+        gsap: getCombinedSkillFiles(['.agent/skills/gsap-skills', '.claude/skills/gsap-skills']),
+        cursorrules: getCombinedSkillFiles(['.agent/skills/awesome-cursorrules/rules', '.claude/skills/awesome-cursorrules/rules']),
+        honnibal: getCombinedSkillFiles(['.agent/skills/honnibal-skills', '.claude/skills/honnibal-skills'])
+    };
+}
+
 export default async function AiAgentsPage() {
     const workflows = await getWorkflows();
+    const skillsMap = await getSkillsMap();
 
-    return <AiAgentsClient workflows={workflows} />;
+    return <AiAgentsClient workflows={workflows} skillsMap={skillsMap} />;
 }

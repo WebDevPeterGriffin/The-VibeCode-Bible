@@ -1,19 +1,15 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #0a0a0a;
-  --color-foreground: #ededed;
-  --color-muted: #171717;
-  --color-border: #262626;
-  --color-primary: #38bdf8;
-  --color-fire: #ef4444;
-  /* For 🔥 callout */
-  --color-skull: #a8a29e;
-  /* For 💀 callout */
-  --color-idea: #fbbf24;
-  /* For 💡 callout */
-  --color-zap: #a855f7;
-  /* For ⚡ callout */
+  --color-background: #0a0a0b;
+  --color-foreground: #fafafa;
+  --color-muted: #18181b;
+  --color-border: #27272a;
+  --color-primary: #7C3AED;
+  --color-fire: #f59e0b;
+  --color-skull: #ef4444;
+  --color-idea: #3b82f6;
+  --color-zap: #7C3AED;
 }
 
 @layer base {
@@ -26,7 +22,7 @@
 
 @layer utilities {
   .custom-scrollbar::-webkit-scrollbar {
-    width: 6px;
+    width: 4px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-track {
@@ -34,16 +30,57 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background-color: var(--color-border);
+    background-color: rgba(255, 255, 255, 0.08);
     border-radius: 20px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background-color: #525252;
+    background-color: rgba(255, 255, 255, 0.15);
   }
 
   .custom-scrollbar {
     scrollbar-width: thin;
-    scrollbar-color: var(--color-border) transparent;
+    scrollbar-color: rgba(255, 255, 255, 0.08) transparent;
   }
+}
+
+/* Noise texture via SVG data URI */
+.noise-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* Subtle pulse for callout icons */
+@keyframes subtle-pulse {
+
+  0%,
+  100% {
+    opacity: 0.9;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.animate-subtle-pulse {
+  animation: subtle-pulse 3s ease-in-out infinite;
+}
+
+/* Scroll indicator bounce */
+@keyframes bounce-gentle {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+.animate-bounce-gentle {
+  animation: bounce-gentle 2s ease-in-out infinite;
 }

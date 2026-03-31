@@ -12,6 +12,7 @@
     "@anthropic-ai/sdk": "^0.80.0",
     "@tailwindcss/postcss": "^4.2.2",
     "ai": "^6.0.141",
+    "framer-motion": "^12.38.0",
     "lucide-react": "^1.7.0",
     "next": "14.2.35",
     "react": "^18",

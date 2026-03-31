@@ -1,46 +1,121 @@
+"use client";
+
 import { content } from '@/data/content';
 import Link from 'next/link';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { ChevronDown } from 'lucide-react';
+import { useRef } from 'react';
+
+function SectionCard({ section, index }: { section: { slug: string; title: string; blocks: Array<{ text?: string }> }; index: number }) {
+  const ref = useRef<HTMLAnchorElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  });
+  const y = useTransform(scrollYProgress, [0, 1], [20, -20]);
+
+  return (
+    <motion.div
+      style={{ y }}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.4, delay: index * 0.05, ease: "easeOut" }}
+    >
+      <Link
+        ref={ref}
+        href={`/${section.slug}`}
+        className="group block p-6 rounded-xl border border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.04] hover:border-white/[0.1] hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(124,58,237,0.08)] transition-all duration-300 cursor-pointer"
+      >
+        <div className="font-medium text-primary/90 group-hover:text-primary transition-colors duration-200 text-[15px]">
+          {section.title}
+        </div>
+        <div className="text-sm text-foreground/40 mt-2 line-clamp-2 leading-relaxed">
+          {section.blocks[0]?.text || "Explore this section."}
+        </div>
+      </Link>
+    </motion.div>
+  );
+}
 
 export default function Home() {
   const firstSection = content[0]?.sections[0];
+  const allSections = content.flatMap(c => c.sections);
 
   return (
-    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <h1 className="text-4xl font-bold tracking-tight mb-6">This is everything I know.</h1>
+    <div>
+      {/* Full Viewport Hero */}
+      <div className="relative min-h-[70vh] flex flex-col justify-center -mt-6 md:-mt-10 -mx-6 md:-mx-10 px-6 md:px-10">
+        {/* CSS Dot Grid Background */}
+        <div
+          className="absolute inset-0 opacity-[0.15]"
+          style={{
+            backgroundImage: 'radial-gradient(circle, rgba(124, 58, 237, 0.3) 1px, transparent 1px)',
+            backgroundSize: '24px 24px',
+          }}
+          aria-hidden="true"
+        />
 
-      <div className="max-w-none text-foreground/80 leading-relaxed mb-12 space-y-4">
-        <p className="text-xl">
-          Use it, steal it, ignore it. It&apos;s just my setup and workflow for shipping fast with AI.
-        </p>
-        <p>
-          I got tired of explaining the same &quot;vibe coding&quot; concepts—how to structure prompts, when to use Claude Code vs Antigravity, and what actual files power the workflows. So I wrote it down.
-        </p>
+        <motion.div
+          className="relative z-10 max-w-3xl"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          <h1 className="text-5xl md:text-6xl font-black tracking-tighter text-foreground/95 leading-[1.05]">
+            Everything I Know.
+          </h1>
+          <p className="text-lg md:text-xl font-light text-foreground/50 mt-4 max-w-xl leading-relaxed">
+            Use it, steal it, ignore it. My setup and workflow for shipping fast with AI.
+          </p>
+          <p className="text-sm text-foreground/30 mt-3 max-w-lg leading-relaxed">
+            How to structure prompts, when to use Claude Code vs Antigravity, and what actual files power the workflows. Written down so I stop repeating myself.
+          </p>
+        </motion.div>
+
+        {/* Scroll Indicator */}
+        <motion.div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1, duration: 0.6 }}
+        >
+          <span className="text-[10px] uppercase tracking-[0.2em] text-foreground/20">Scroll</span>
+          <ChevronDown className="w-4 h-4 text-foreground/20 animate-bounce-gentle" />
+        </motion.div>
       </div>
 
-      <h2 className="text-2xl font-semibold tracking-tight mb-4 border-b border-border/50 pb-2">Contents</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {content.flatMap(c => c.sections).map((section) => (
-          <Link
-            key={section.slug}
-            href={`/${section.slug}`}
-            className="group block p-5 rounded-xl border border-border bg-muted/20 hover:bg-muted/50 transition-colors"
-          >
-            <div className="font-medium text-primary group-hover:text-primary/80 transition-colors">{section.title}</div>
-            <div className="text-sm text-foreground/60 mt-2 line-clamp-2">
-              {section.blocks[0]?.text || "Explore this section."}
-            </div>
-          </Link>
-        ))}
-      </div>
+      {/* Section Cards */}
+      <motion.div
+        className="mt-8"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4 }}
+      >
+        <h2 className="text-sm font-semibold uppercase tracking-[0.15em] text-foreground/25 mb-6">Contents</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {allSections.map((section, i) => (
+            <SectionCard key={section.slug} section={section} index={i} />
+          ))}
+        </div>
+      </motion.div>
 
-      <div className="mt-12 flex justify-center pb-20">
+      {/* CTA */}
+      <motion.div
+        className="mt-16 flex justify-center pb-20"
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.4 }}
+      >
         <Link
           href={`/${firstSection.slug}`}
-          className="px-6 py-3 bg-primary text-background font-medium rounded-lg hover:bg-primary/90 transition-colors shadow-lg hover:shadow-primary/20"
+          className="px-6 py-3 bg-primary text-white font-medium rounded-lg hover:bg-primary/90 transition-all duration-200 shadow-lg shadow-primary/20 hover:shadow-primary/30 cursor-pointer text-sm"
         >
           Start Reading &rarr;
         </Link>
-      </div>
+      </motion.div>
     </div>
   );
 }
