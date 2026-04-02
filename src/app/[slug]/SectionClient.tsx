@@ -7,6 +7,7 @@ import CallOut from '@/components/CallOut';
 import CodeBlock from '@/components/CodeBlock';
 import ReadAloud from '@/components/ReadAloud';
 import ProgressUpdater from './ProgressUpdater';
+import WorkflowAccordion from '@/components/WorkflowAccordion';
 
 interface SectionClientProps {
     section: Section;
@@ -117,6 +118,8 @@ function renderBlock(block: Block, index: number, isFirstParagraph: boolean) {
                     <CodeBlock language={block.language!} code={block.code!} />
                 </AnimatedBlock>
             );
+        case 'workflow_accordion':
+            return <WorkflowAccordion key={index} workflows={block.workflows!} index={index} />;
         default:
             return null;
     }

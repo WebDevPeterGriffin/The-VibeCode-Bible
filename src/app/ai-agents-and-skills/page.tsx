@@ -31,8 +31,21 @@ async function getWorkflows() {
         const descMatch = content.match(/description:\s*(.+)/i);
         const desc = descMatch ? descMatch[1].trim() : 'No description provided.';
 
-        // Count steps (e.g., "1. " or "10. " at start of lines)
-        const stepMatches = content.match(/^\d+\.\s/gm);
+        // Extract first paragraph for whyImportant
+        let whyImportant = "Ensures stability and consistent patterns across your codebase.";
+        const firstParaMatch = content.match(/#\s+[^\n]+\s*\n+([^#]+?)\n+##/);
+        if (firstParaMatch) {
+            whyImportant = firstParaMatch[1].trim().replace(/\n/g, ' ');
+        }
+
+        // Extract steps for details
+        const details: string[] = [];
+        const stepMatches = content.match(/^\d+\.\s+\*\*(.+)\*\*/gm);
+        if (stepMatches) {
+            for (const match of stepMatches) {
+                details.push(match.replace(/^\d+\.\s+\*\*(.+)\*\*/, '$1'));
+            }
+        }
         const steps = stepMatches ? stepMatches.length : 0;
 
         // Command is the filename without .md
@@ -41,7 +54,7 @@ async function getWorkflows() {
         // Cycle through colors
         const color = COLORS[index % COLORS.length];
 
-        return { cmd, desc, steps, color };
+        return { cmd, desc, steps, color, whyImportant, details };
     });
 
     // Sort alphabetically by command

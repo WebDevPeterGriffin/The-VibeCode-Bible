@@ -3,12 +3,15 @@
 import { useState } from 'react';
 import { Terminal, Lightbulb, Zap, Code, ShieldCheck } from 'lucide-react';
 import SkillSearchBox from './SkillSearchBox';
+import WorkflowAccordion from '@/components/WorkflowAccordion';
 
 export interface WorkflowEntry {
     cmd: string;
     desc: string;
     steps: number;
     color: string;
+    whyImportant?: string;
+    details?: string[];
 }
 
 export interface SkillEntry {
@@ -223,22 +226,23 @@ export default function AiAgentsClient({ workflows, skillsMap }: Props) {
                             </p>
                         </section>
 
-                        <div className="grid gap-3">
-                            {workflows.length > 0 ? workflows.map((wf) => (
-                                <div key={wf.cmd} className="border border-white/[0.08] rounded-lg overflow-hidden hover:border-white/[0.12] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-indigo-500/[0.04] transition-all duration-300 cursor-pointer">
-                                    <div className="bg-white/[0.03] px-4 py-3 flex items-center gap-2">
-                                        <Terminal className="w-4 h-4 text-indigo-400" />
-                                        <span className={`font-mono text-sm ${wf.color}`}>{wf.cmd}</span>
-                                        <span className="text-xs text-foreground/30 ml-auto">{wf.steps} steps</span>
-                                    </div>
-                                    <div className="px-4 py-3 text-sm text-foreground/50">{wf.desc}</div>
-                                </div>
-                            )) : (
-                                <div className="p-8 text-center text-foreground/40 border border-dashed border-white/[0.08] rounded-lg bg-white/[0.02]">
-                                    No workflows found in .agent/workflows/
-                                </div>
-                            )}
-                        </div>
+                        {workflows.length > 0 ? (
+                            <div className="mt-4">
+                                <WorkflowAccordion
+                                    workflows={workflows.map((wf) => ({
+                                        title: wf.cmd,
+                                        whatItDoes: wf.desc,
+                                        whyImportant: wf.whyImportant || "Increases reliability and handles complex agent orchestration automatically.",
+                                        details: wf.details || []
+                                    }))}
+                                    index={0}
+                                />
+                            </div>
+                        ) : (
+                            <div className="p-8 text-center text-foreground/40 border border-dashed border-white/[0.08] rounded-lg bg-white/[0.02]">
+                                No workflows found in .agent/workflows/
+                            </div>
+                        )}
 
                         <div className="bg-black/40 backdrop-blur-sm p-4 rounded-lg border border-white/[0.08] text-sm font-mono text-zinc-300">
                             <span className="text-zinc-500">{"# Invoke any workflow from your AI agent terminal:"}</span><br />
