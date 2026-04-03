@@ -50,30 +50,32 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to explore
 - **Real Project Walkthrough** — how I built Siteo in 3 days using this exact workflow
 - **Mistakes I Made** — the stuff that wasted my time so you don't repeat it
 
-### 🤖 1,172 Bundled AI Agent Skills
+### 🤖 1,316 Bundled AI Agent Skills
 Pre-loaded and ready to use the second you clone. No extra installs needed.
 
 | Skill Pack | Files | Original Creator | What It Does |
 |---|---|---|---|
-| **Awesome CursorRules** | 1,063 | [@PatrickJS](https://github.com/PatrickJS/awesome-cursorrules) | Hundreds of framework-specific `.cursorrules` for Next.js, React, Vue, Python, and more |
+| **Awesome CursorRules** | 1,242 | [@PatrickJS](https://github.com/PatrickJS/awesome-cursorrules) | Hundreds of framework-specific `.cursorrules` for Next.js, React, Vue, Python, and more |
 | **Claude SEO** | 68 | [@AgriciDaniel](https://github.com/AgriciDaniel/claude-seo) | 13 sub-skills and 7 subagents for full technical SEO automation |
+| **GSAP Skills** | 33 | [@greensock](https://github.com/greensock/gsap-skills) | GSAP/ScrollTrigger animation patterns, React/Next.js integration, and cinematic scroll effects |
 | **UI/UX Design Agent** | 31 | [@nextlevelbuilder](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | Deep design intelligence — 50 styles, 21 palettes, 50 font pairings |
 | **Honnibal Claude Skills** | 10 | [@honnibal](https://github.com/honnibal/claude-skills) | Mutation testing, type tightening, hypothesis tests, contract docstrings |
 
-### ⚡ 9 Executable Agent Workflows
+### ⚡ 10 Executable Agent Workflows
 Slash-command automation scripts your AI agent can run directly. The system automatically discovers new workflows added to `.agent/workflows/`.
 
 | Workflow | Command | Steps |
 |---|---|---|
-| Project Cleanup | `/project-cleanup` | 8 |
-| New Feature Scaffold | `/new-feature` | 6 |
-| SEO Audit | `/seo-audit` | 7 |
-| Landing Page Generator | `/landing-page` | 7 |
+| Auth & Authorization | `/authentication-&-authorization` | 11 |
 | Code Quality Review | `/code-review` | 7 |
-| Deploy Checklist | `/deploy-checklist` | 8 |
 | Debug Session | `/Debug-session` | 10 |
+| Deploy Checklist | `/deploy-checklist` | 8 |
+| Landing Page Generator | `/landing-page` | 7 |
+| New Feature Scaffold | `/new-feature` | 6 |
 | Performance Audit | `/Performance-audit` | 10 |
+| Project Cleanup | `/project-cleanup` | 8 |
 | Security Audit | `/security-audit` | 10 |
+| SEO Audit | `/seo-audit` | 7 |
 
 ### 🏗️ Production-Grade AGENTS.md
 A battle-tested system prompt that enforces Next.js 14, TypeScript strict mode, Tailwind v4, dark-mode-first aesthetics, semantic HTML, and conventional commits across every AI interaction.
