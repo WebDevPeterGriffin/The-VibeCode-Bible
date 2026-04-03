@@ -14,7 +14,9 @@ const COLORS = [
     'text-amber-400'
 ];
 
+let cachedWorkflows: any = null;
 async function getWorkflows() {
+    if (cachedWorkflows) return cachedWorkflows;
     const workflowsDir = path.join(process.cwd(), '.agent/workflows');
 
     if (!fs.existsSync(workflowsDir)) {
@@ -58,7 +60,8 @@ async function getWorkflows() {
     });
 
     // Sort alphabetically by command
-    return workflows.sort((a, b) => a.cmd.localeCompare(b.cmd));
+    cachedWorkflows = workflows.sort((a, b) => a.cmd.localeCompare(b.cmd));
+    return cachedWorkflows;
 }
 
 export interface SkillEntry {
@@ -117,13 +120,16 @@ function getCombinedSkillFiles(dirs: string[], limit: number = 3000): SkillEntry
     return entries.sort((a, b) => a.filename.localeCompare(b.filename));
 }
 
+let cachedSkills: any = null;
 async function getSkillsMap() {
-    return {
+    if (cachedSkills) return cachedSkills;
+    cachedSkills = {
         uiux: getCombinedSkillFiles(['.agent/skills/ui-ux-pro-max', '.claude/skills/ui-ux-pro-max']),
         gsap: getCombinedSkillFiles(['.agent/skills/gsap-skills', '.claude/skills/gsap-skills']),
         cursorrules: getCombinedSkillFiles(['.agent/skills/awesome-cursorrules/rules', '.claude/skills/awesome-cursorrules/rules']),
         honnibal: getCombinedSkillFiles(['.agent/skills/honnibal-skills', '.claude/skills/honnibal-skills'])
     };
+    return cachedSkills;
 }
 
 export default async function AiAgentsPage() {
