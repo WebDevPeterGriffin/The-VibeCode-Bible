@@ -4,10 +4,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { content } from '@/data/content';
 import { useEffect, useState } from 'react';
+import { PanelLeftClose, PanelLeft } from 'lucide-react';
 
 export default function Sidebar() {
     const pathname = usePathname();
     const [progress, setProgress] = useState<string[]>([]);
+    const [collapsed, setCollapsed] = useState(false);
 
     useEffect(() => {
         const saved = localStorage.getItem('vibe-progress');
@@ -16,20 +18,54 @@ export default function Sidebar() {
         }
     }, [pathname]);
 
+    // Persist sidebar state
+    useEffect(() => {
+        const saved = localStorage.getItem('vibe-sidebar-collapsed');
+        if (saved === 'true') setCollapsed(true);
+    }, []);
+
+    function toggleCollapsed() {
+        setCollapsed(prev => {
+            localStorage.setItem('vibe-sidebar-collapsed', String(!prev));
+            return !prev;
+        });
+    }
+
     const allSections = content.flatMap(c => c.sections);
     const totalSections = allSections.length;
     const completedCount = progress.filter(slug => slug !== 'ai-agents-and-skills' && slug !== 'playground').length;
 
     return (
-        <nav className="w-full md:w-56 shrink-0 flex flex-col md:h-screen md:sticky md:top-0 border-b md:border-b-0 md:border-r border-white/[0.06] bg-background/70">
-            <div className="p-5 pb-4">
-                <Link href="/" className="font-bold text-lg tracking-tight block text-foreground/90 hover:text-foreground transition-colors duration-200">
-                    Vibe Coding
-                </Link>
-                <p className="text-xs text-foreground/30 mt-0.5">Everything I know.</p>
+        <nav className={`shrink-0 flex flex-col border-b md:border-b-0 md:border-r border-white/[0.06] bg-background/70 transition-all duration-300 ease-in-out overflow-hidden ${collapsed ? 'md:w-12 w-full' : 'md:w-56 w-full'
+            }`}>
+            {/* Header */}
+            <div className={`flex items-center justify-between p-5 pb-4 ${collapsed ? 'md:p-3 md:justify-center' : ''}`}>
+                {!collapsed && (
+                    <div className="hidden md:block">
+                        <Link href="/" className="font-bold text-lg tracking-tight block text-foreground/90 hover:text-foreground transition-colors duration-200">
+                            Vibe Coding
+                        </Link>
+                        <p className="text-xs text-foreground/30 mt-0.5">Everything I know.</p>
+                    </div>
+                )}
+                {/* Mobile: always show title */}
+                <div className="md:hidden">
+                    <Link href="/" className="font-bold text-lg tracking-tight block text-foreground/90 hover:text-foreground transition-colors duration-200">
+                        Vibe Coding
+                    </Link>
+                    <p className="text-xs text-foreground/30 mt-0.5">Everything I know.</p>
+                </div>
+                <button
+                    onClick={toggleCollapsed}
+                    className="p-1.5 hover:bg-white/[0.06] rounded-md transition text-foreground/40 hover:text-foreground cursor-pointer border border-transparent hover:border-white/[0.05] hidden md:flex items-center justify-center"
+                    title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+                >
+                    {collapsed ? <PanelLeft size={16} /> : <PanelLeftClose size={16} />}
+                </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto custom-scrollbar px-3 pb-6 hidden md:block">
+            {/* Nav items — hidden when collapsed on desktop */}
+            <div className={`flex-1 overflow-y-auto custom-scrollbar px-3 pb-6 ${collapsed ? 'hidden' : 'hidden md:block'}`}>
                 <div className="space-y-1">
                     {content.map((category) => (
                         <div key={category.id} className="mb-5">
@@ -46,8 +82,8 @@ export default function Sidebar() {
                                             key={section.slug}
                                             href={`/${section.slug}`}
                                             className={`relative flex items-center gap-2.5 px-3 py-1.5 rounded-md transition-all duration-200 text-[13px] cursor-pointer ${isActive
-                                                    ? 'bg-primary/[0.08] text-primary font-medium border-l-2 border-primary'
-                                                    : 'text-foreground/40 hover:text-foreground/70 hover:bg-white/[0.03] border-l-2 border-transparent'
+                                                ? 'bg-primary/[0.08] text-primary font-medium border-l-2 border-primary'
+                                                : 'text-foreground/40 hover:text-foreground/70 hover:bg-white/[0.03] border-l-2 border-transparent'
                                                 }`}
                                         >
                                             {/* Progress indicator — thin line */}
@@ -63,12 +99,13 @@ export default function Sidebar() {
                 </div>
             </div>
 
-            <div className="p-3 border-t border-white/[0.04] hidden md:flex flex-col gap-2 mt-auto">
+            {/* Bottom nav links */}
+            <div className={`p-3 border-t border-white/[0.04] flex-col gap-2 mt-auto ${collapsed ? 'hidden' : 'hidden md:flex'}`}>
                 <Link
                     href="/ai-agents-and-skills"
                     className={`flex items-center justify-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 text-xs font-medium border cursor-pointer ${pathname === '/ai-agents-and-skills'
-                            ? 'border-primary/30 bg-primary/10 text-primary shadow-[0_0_16px_rgba(124,58,237,0.1)]'
-                            : 'border-white/[0.06] bg-white/[0.02] text-foreground/50 hover:text-primary hover:border-primary/20 hover:bg-primary/[0.05]'
+                        ? 'border-primary/30 bg-primary/10 text-primary shadow-[0_0_16px_rgba(124,58,237,0.1)]'
+                        : 'border-white/[0.06] bg-white/[0.02] text-foreground/50 hover:text-primary hover:border-primary/20 hover:bg-primary/[0.05]'
                         }`}
                 >
                     AI Agents & Skills
@@ -76,8 +113,8 @@ export default function Sidebar() {
                 <Link
                     href="/playground"
                     className={`flex items-center justify-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 text-xs font-medium border cursor-pointer ${pathname === '/playground'
-                            ? 'border-primary/30 bg-primary/10 text-primary shadow-[0_0_16px_rgba(124,58,237,0.1)]'
-                            : 'border-white/[0.06] bg-white/[0.02] text-foreground/50 hover:text-primary hover:border-primary/20 hover:bg-primary/[0.05]'
+                        ? 'border-primary/30 bg-primary/10 text-primary shadow-[0_0_16px_rgba(124,58,237,0.1)]'
+                        : 'border-white/[0.06] bg-white/[0.02] text-foreground/50 hover:text-primary hover:border-primary/20 hover:bg-primary/[0.05]'
                         }`}
                 >
                     AI Playground

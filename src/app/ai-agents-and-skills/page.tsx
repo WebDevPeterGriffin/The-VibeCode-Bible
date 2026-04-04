@@ -14,7 +14,16 @@ const COLORS = [
     'text-amber-400'
 ];
 
-let cachedWorkflows: any = null;
+export interface WorkflowEntry {
+    cmd: string;
+    desc: string;
+    steps: number;
+    color: string;
+    whyImportant: string;
+    details: string[];
+}
+
+let cachedWorkflows: WorkflowEntry[] | null = null;
 async function getWorkflows() {
     if (cachedWorkflows) return cachedWorkflows;
     const workflowsDir = path.join(process.cwd(), '.agent/workflows');
@@ -104,8 +113,7 @@ function getSkillFiles(dirPath: string, limit: number): SkillEntry[] {
 
         readDir(fullPath);
         return entries;
-    } catch (e) {
-        console.error("Error reading skills dir", dirPath, e);
+    } catch {
         return [];
     }
 }
@@ -120,7 +128,7 @@ function getCombinedSkillFiles(dirs: string[], limit: number = 3000): SkillEntry
     return entries.sort((a, b) => a.filename.localeCompare(b.filename));
 }
 
-let cachedSkills: any = null;
+let cachedSkills: Record<string, SkillEntry[]> | null = null;
 async function getSkillsMap() {
     if (cachedSkills) return cachedSkills;
     cachedSkills = {

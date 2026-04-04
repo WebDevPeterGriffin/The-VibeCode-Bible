@@ -12,8 +12,7 @@ export async function getSkillContent(filePath: string) {
         const fullPath = path.join(process.cwd(), filePath);
         const content = fs.readFileSync(fullPath, "utf-8");
         return content;
-    } catch (e) {
-        console.error(e);
+    } catch {
         return null;
     }
 }
