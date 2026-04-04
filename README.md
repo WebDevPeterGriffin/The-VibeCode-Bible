@@ -42,13 +42,19 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to explore
 
 ## 🧠 What's Inside?
 
-### 📚 22 Lessons in 6 Categories
+### 📚 24 Lessons in 6 Categories
 - **My Exact Setup** — the stack, extensions, folder structure, and settings I use daily
 - **The AGENTS.md System** — how I give AI agents permanent context so they stop making dumb mistakes
 - **Antigravity vs Claude Code** — when to use which one and why, from someone who uses both daily
-- **Honest AI Breakdown** — Claude, ChatGPT, Gemini — no fluff, just which one to use for what
+- **Setting Up Local AI** — installing Ollama, pulling models, and running local AI with zero API costs
+- **Defending Against Prompt Injections** — practical hardening techniques for local LLMs
 - **Real Project Walkthrough** — how I built Siteo in 3 days using this exact workflow
-- **Mistakes I Made** — the stuff that wasted my time so you don't repeat it
+
+### 🖥️ Built-in VibeCode AI Playground
+An interactive chat interface to safely test your prompts and skill files.
+- **Auto-Model Discovery** — Automatically detects your installed Ollama models (`http://localhost:11434/api/tags`)
+- **Zero Cost, Total Privacy** — Iterate on skill files totally offline and completely free
+- **Prompt Injection Hardened** — Built-in defenses via strict prompt boundaries and temperature lockdown
 
 ### 🤖 1,316 Bundled AI Agent Skills
 Pre-loaded and ready to use the second you clone. No extra installs needed.
