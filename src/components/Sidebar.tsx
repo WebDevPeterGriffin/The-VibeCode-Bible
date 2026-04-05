@@ -4,12 +4,14 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { content } from '@/data/content';
 import { useEffect, useState } from 'react';
-import { PanelLeftClose, PanelLeft } from 'lucide-react';
+import { PanelLeftClose, PanelLeft, ChevronRight, MessageSquare, Wrench } from 'lucide-react';
 
 export default function Sidebar() {
     const pathname = usePathname();
     const [progress, setProgress] = useState<string[]>([]);
     const [collapsed, setCollapsed] = useState(false);
+    const [openCategories, setOpenCategories] = useState<string[]>([]);
+    const [hydrated, setHydrated] = useState(false);
 
     useEffect(() => {
         const saved = localStorage.getItem('vibe-progress');
@@ -23,6 +25,50 @@ export default function Sidebar() {
         const saved = localStorage.getItem('vibe-sidebar-collapsed');
         if (saved === 'true') setCollapsed(true);
     }, []);
+
+    // Load collapsed categories from localStorage
+    useEffect(() => {
+        const saved = localStorage.getItem('vibe-open-categories');
+        if (saved) {
+            try {
+                setOpenCategories(JSON.parse(saved));
+            } catch {
+                setOpenCategories([content[0]?.id || '']);
+            }
+        } else {
+            // Default: auto-expand the category containing the current page
+            const currentCategory = content.find(c =>
+                c.sections.some(s => pathname === `/${s.slug}`)
+            );
+            setOpenCategories([currentCategory?.id || content[0]?.id || '']);
+        }
+        setHydrated(true);
+    }, []);
+
+    // Auto-expand category when navigating to a lesson inside it
+    useEffect(() => {
+        if (!hydrated) return;
+        const currentCategory = content.find(c =>
+            c.sections.some(s => pathname === `/${s.slug}`)
+        );
+        if (currentCategory && !openCategories.includes(currentCategory.id)) {
+            setOpenCategories(prev => {
+                const next = [...prev, currentCategory.id];
+                localStorage.setItem('vibe-open-categories', JSON.stringify(next));
+                return next;
+            });
+        }
+    }, [pathname, hydrated]);
+
+    function toggleCategory(categoryId: string) {
+        setOpenCategories(prev => {
+            const next = prev.includes(categoryId)
+                ? prev.filter(id => id !== categoryId)
+                : [...prev, categoryId];
+            localStorage.setItem('vibe-open-categories', JSON.stringify(next));
+            return next;
+        });
+    }
 
     function toggleCollapsed() {
         setCollapsed(prev => {
@@ -43,7 +89,7 @@ export default function Sidebar() {
                 {!collapsed && (
                     <div className="hidden md:block">
                         <Link href="/" className="font-bold text-lg tracking-tight block text-foreground/90 hover:text-foreground transition-colors duration-200">
-                            Vibe Coding
+                            ⚡ VibeCode Bible
                         </Link>
                         <p className="text-xs text-foreground/30 mt-0.5">Everything I know.</p>
                     </div>
@@ -51,7 +97,7 @@ export default function Sidebar() {
                 {/* Mobile: always show title */}
                 <div className="md:hidden">
                     <Link href="/" className="font-bold text-lg tracking-tight block text-foreground/90 hover:text-foreground transition-colors duration-200">
-                        Vibe Coding
+                        ⚡ VibeCode Bible
                     </Link>
                     <p className="text-xs text-foreground/30 mt-0.5">Everything I know.</p>
                 </div>
@@ -67,49 +113,87 @@ export default function Sidebar() {
             {/* Nav items — hidden when collapsed on desktop */}
             <div className={`flex-1 overflow-y-auto custom-scrollbar px-3 pb-6 ${collapsed ? 'hidden' : 'hidden md:block'}`}>
                 <div className="space-y-1">
-                    {content.map((category) => (
-                        <div key={category.id} className="mb-5">
-                            <h3 className="text-[10px] font-semibold text-foreground/25 uppercase tracking-[0.15em] mb-1.5 px-3">
-                                {category.title}
-                            </h3>
-                            <div className="space-y-px">
-                                {category.sections.map((section) => {
-                                    const isActive = pathname === `/${section.slug}`;
-                                    const isRead = progress.includes(section.slug);
+                    {content.map((category) => {
+                        const isOpen = openCategories.includes(category.id);
+                        const hasActivePage = category.sections.some(s => pathname === `/${s.slug}`);
 
-                                    return (
-                                        <Link
-                                            key={section.slug}
-                                            href={`/${section.slug}`}
-                                            className={`relative flex items-center gap-2.5 px-3 py-1.5 rounded-md transition-all duration-200 text-[13px] cursor-pointer ${isActive
-                                                ? 'bg-primary/[0.08] text-primary font-medium border-l-2 border-primary'
-                                                : 'text-foreground/40 hover:text-foreground/70 hover:bg-white/[0.03] border-l-2 border-transparent'
-                                                }`}
-                                        >
-                                            {/* Progress indicator — thin line */}
-                                            <div className={`w-1 h-1 rounded-full transition-colors duration-200 ${isRead ? 'bg-primary/60' : 'bg-foreground/10'
-                                                }`} />
-                                            <span className="line-clamp-1">{section.title.replace(/^\d+\.\s*/, '')}</span>
-                                        </Link>
-                                    );
-                                })}
+                        return (
+                            <div key={category.id} className="mb-1">
+                                {/* Category Header — clickable to toggle */}
+                                <button
+                                    onClick={() => toggleCategory(category.id)}
+                                    className={`w-full flex items-center gap-1.5 px-3 py-2 rounded-md transition-all duration-200 cursor-pointer group ${hasActivePage
+                                        ? 'text-primary/70'
+                                        : 'text-foreground/30 hover:text-foreground/50 hover:bg-white/[0.02]'
+                                        }`}
+                                >
+                                    <ChevronRight
+                                        size={11}
+                                        className={`transition-transform duration-200 shrink-0 ${isOpen ? 'rotate-90' : ''}`}
+                                    />
+                                    <span className="text-[10px] font-semibold uppercase tracking-[0.15em] truncate">
+                                        {category.title}
+                                    </span>
+                                </button>
+
+                                {/* Category Items — animate height */}
+                                <div
+                                    className="overflow-hidden transition-all duration-200 ease-in-out"
+                                    style={{
+                                        maxHeight: isOpen ? `${category.sections.length * 36}px` : '0px',
+                                        opacity: isOpen ? 1 : 0,
+                                    }}
+                                >
+                                    <div className="space-y-px ml-1 mt-0.5">
+                                        {category.sections.map((section) => {
+                                            const isActive = pathname === `/${section.slug}`;
+                                            const isRead = progress.includes(section.slug);
+
+                                            return (
+                                                <Link
+                                                    key={section.slug}
+                                                    href={`/${section.slug}`}
+                                                    className={`relative flex items-center gap-2.5 px-3 py-1.5 rounded-md transition-all duration-200 text-[13px] cursor-pointer ${isActive
+                                                        ? 'bg-primary/[0.08] text-primary font-medium border-l-2 border-primary'
+                                                        : 'text-foreground/40 hover:text-foreground/70 hover:bg-white/[0.03] border-l-2 border-transparent'
+                                                        }`}
+                                                >
+                                                    {/* Progress indicator */}
+                                                    <div className={`w-1 h-1 rounded-full transition-colors duration-200 ${isRead ? 'bg-primary/60' : 'bg-foreground/10'
+                                                        }`} />
+                                                    <span className="line-clamp-1">{section.title.replace(/^\d+\.\s*/, '')}</span>
+                                                </Link>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
+                </div>
+
+                {/* Agent Toolkit Section */}
+                <div className="mt-4 pt-4 border-t border-white/[0.04]">
+                    <div className="flex items-center gap-1.5 px-3 mb-1.5">
+                        <Wrench size={11} className="text-foreground/25" />
+                        <span className="text-[10px] font-semibold text-foreground/25 uppercase tracking-[0.15em]">
+                            Agent Toolkit
+                        </span>
+                    </div>
+                    <Link
+                        href="/ai-agents-and-skills"
+                        className={`flex items-center gap-2.5 px-3 py-1.5 rounded-md transition-all duration-200 text-[13px] cursor-pointer ml-1 ${pathname === '/ai-agents-and-skills'
+                            ? 'bg-primary/[0.08] text-primary font-medium border-l-2 border-primary'
+                            : 'text-foreground/40 hover:text-foreground/70 hover:bg-white/[0.03] border-l-2 border-transparent'
+                            }`}
+                    >
+                        Skills & Workflows
+                    </Link>
                 </div>
             </div>
 
-            {/* Bottom nav links */}
+            {/* Bottom — Local Chat + Progress */}
             <div className={`p-3 border-t border-white/[0.04] flex-col gap-2 mt-auto ${collapsed ? 'hidden' : 'hidden md:flex'}`}>
-                <Link
-                    href="/ai-agents-and-skills"
-                    className={`flex items-center justify-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 text-xs font-medium border cursor-pointer ${pathname === '/ai-agents-and-skills'
-                        ? 'border-primary/30 bg-primary/10 text-primary shadow-[0_0_16px_rgba(124,58,237,0.1)]'
-                        : 'border-white/[0.06] bg-white/[0.02] text-foreground/50 hover:text-primary hover:border-primary/20 hover:bg-primary/[0.05]'
-                        }`}
-                >
-                    AI Agents & Skills
-                </Link>
                 <Link
                     href="/playground"
                     className={`flex items-center justify-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 text-xs font-medium border cursor-pointer ${pathname === '/playground'
@@ -117,7 +201,8 @@ export default function Sidebar() {
                         : 'border-white/[0.06] bg-white/[0.02] text-foreground/50 hover:text-primary hover:border-primary/20 hover:bg-primary/[0.05]'
                         }`}
                 >
-                    AI Playground
+                    <MessageSquare size={13} />
+                    Local Chat
                 </Link>
                 <div className="text-[10px] text-foreground/20 text-center mt-1">
                     {completedCount} / {totalSections} completed
