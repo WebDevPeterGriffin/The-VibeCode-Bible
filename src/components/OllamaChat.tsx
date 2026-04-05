@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, FormEvent } from "react";
-import { Send, Bot, User, Loader2, Wifi, WifiOff, Zap, Brain, Sparkles, Trash2, Plus, MessageSquare, AlertTriangle, PanelLeftClose, PanelLeft } from "lucide-react";
+import { Send, Bot, User, Loader2, Wifi, WifiOff, Trash2, Plus, MessageSquare, AlertTriangle, PanelLeftClose, PanelLeft, ChevronDown } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Link from "next/link";
@@ -18,45 +18,10 @@ interface ChatSession {
     updatedAt: number;
 }
 
-interface ModelPreset {
-    id: string;
-    label: string;
-    icon: typeof Zap;
-    model: string;
-    description: string;
-    color: string;
-    options: { num_ctx: number; num_predict: number; temperature: number };
+interface OllamaModel {
+    name: string;
+    size: number;
 }
-
-const MODEL_PRESETS: ModelPreset[] = [
-    {
-        id: "fast",
-        label: "Fast",
-        icon: Zap,
-        model: "gemma3:4b",
-        description: "Quick answers, low latency",
-        color: "rgb(250,204,21)",
-        options: { num_ctx: 2048, num_predict: 256, temperature: 0.5 },
-    },
-    {
-        id: "balanced",
-        label: "Balanced",
-        icon: Sparkles,
-        model: "gemma4:latest",
-        description: "Best mix of speed and quality",
-        color: "rgb(74,222,128)",
-        options: { num_ctx: 4096, num_predict: 512, temperature: 0.7 },
-    },
-    {
-        id: "deep",
-        label: "Deep Thinking",
-        icon: Brain,
-        model: "gemma4:latest",
-        description: "Longer, more detailed responses",
-        color: "rgb(168,85,247)",
-        options: { num_ctx: 8192, num_predict: 1024, temperature: 0.8 },
-    },
-];
 
 const SYSTEM_PROMPT = `You are the VibeCode Bible Assistant. You are a helpful AI designed to answer questions strictly about the VibeCode Bible project, vibe coding methodology, and specific topics covered in this knowledge base.
 
@@ -129,8 +94,11 @@ export default function OllamaChat() {
     const [input, setInput] = useState("");
     const [isStreaming, setIsStreaming] = useState(false);
     const [ollamaStatus, setOllamaStatus] = useState<"checking" | "connected" | "disconnected">("checking");
-    const [activePreset, setActivePreset] = useState<string>("fast");
+    const [availableModels, setAvailableModels] = useState<OllamaModel[]>([]);
+    const [selectedModel, setSelectedModel] = useState<string>("");
+    const [modelDropdownOpen, setModelDropdownOpen] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
+    const modelDropdownRef = useRef<HTMLDivElement>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -234,9 +202,20 @@ export default function OllamaChat() {
         }
     }, [sessions, isLoaded]);
 
-    // Check Ollama connectivity on mount
+    // Check Ollama connectivity and discover models on mount
     useEffect(() => {
         checkOllamaStatus();
+    }, []);
+
+    // Close model dropdown on outside click
+    useEffect(() => {
+        function handleClickOutside(e: MouseEvent) {
+            if (modelDropdownRef.current && !modelDropdownRef.current.contains(e.target as Node)) {
+                setModelDropdownOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
     // Auto-scroll to bottom on new messages
@@ -249,6 +228,15 @@ export default function OllamaChat() {
         try {
             const res = await fetch("/api/ollama/tags");
             if (res.ok) {
+                const data = await res.json();
+                const models: OllamaModel[] = (data.models || []).map((m: { name: string; size: number }) => ({
+                    name: m.name,
+                    size: m.size || 0,
+                }));
+                setAvailableModels(models);
+                if (models.length > 0 && !selectedModel) {
+                    setSelectedModel(models[0].name);
+                }
                 setOllamaStatus("connected");
             } else {
                 setOllamaStatus("disconnected");
@@ -258,8 +246,7 @@ export default function OllamaChat() {
         }
     }
 
-    const currentPreset = MODEL_PRESETS.find((p) => p.id === activePreset) || MODEL_PRESETS[1];
-    const resolvedModel = currentPreset.model;
+    const resolvedModel = selectedModel || (availableModels.length > 0 ? availableModels[0].name : "");
 
     async function handleSubmit(e: FormEvent) {
         e.preventDefault();
@@ -287,7 +274,7 @@ export default function OllamaChat() {
                         ...updatedMessages,
                     ],
                     stream: true,
-                    options: currentPreset.options,
+                    options: { temperature: 0.5 },
                 }),
             });
 
@@ -449,7 +436,7 @@ export default function OllamaChat() {
                         <div className="flex flex-col">
                             <div className="flex items-center gap-2">
                                 <h2 className="text-sm font-semibold tracking-tight">VibeCode Assistant</h2>
-                                <span className="text-[10px] text-foreground/40 hidden sm:inline">· {resolvedModel}</span>
+                                <span className="text-[10px] text-foreground/40 hidden sm:inline">· {resolvedModel || "No model"}</span>
                             </div>
                         </div>
                     </div>
@@ -492,31 +479,47 @@ export default function OllamaChat() {
                     </div>
                 </div>
 
-                {/* Model Selector */}
+                {/* Model Selector Dropdown */}
                 <div className="flex items-center gap-2 px-5 py-2.5">
-                    {MODEL_PRESETS.map((preset) => {
-                        const Icon = preset.icon;
-                        const isActive = activePreset === preset.id;
-                        return (
-                            <button
-                                key={preset.id}
-                                onClick={() => setActivePreset(preset.id)}
-                                disabled={isStreaming}
-                                title={preset.description}
-                                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-all duration-200 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed ${isActive
-                                    ? "border-white/20 bg-white/[0.08] shadow-sm"
-                                    : "border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.05] hover:border-white/[0.1]"
-                                    }`}
-                                style={isActive ? { color: preset.color } : { color: "rgba(255,255,255,0.4)" }}
-                            >
-                                <Icon size={12} />
-                                {preset.label}
-                            </button>
-                        );
-                    })}
-                    <span className="text-[10px] text-foreground/20 ml-auto">
-                        {resolvedModel}
-                    </span>
+                    <div ref={modelDropdownRef} className="relative">
+                        <button
+                            onClick={() => setModelDropdownOpen(!modelDropdownOpen)}
+                            disabled={isStreaming || availableModels.length === 0}
+                            className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium border border-white/[0.08] bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/[0.12] transition-all duration-200 cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed min-w-[160px]"
+                        >
+                            <span className="text-foreground/70 truncate">
+                                {resolvedModel || "No models found"}
+                            </span>
+                            <ChevronDown size={12} className={`text-foreground/40 ml-auto transition-transform duration-200 ${modelDropdownOpen ? "rotate-180" : ""}`} />
+                        </button>
+                        {modelDropdownOpen && availableModels.length > 0 && (
+                            <div className="absolute top-full left-0 mt-1 w-full min-w-[200px] bg-[#1a1a2e] border border-white/[0.1] rounded-lg shadow-2xl shadow-black/40 z-50 overflow-hidden animate-[scaleIn_150ms_ease-out]">
+                                {availableModels.map((model) => (
+                                    <button
+                                        key={model.name}
+                                        onClick={() => {
+                                            setSelectedModel(model.name);
+                                            setModelDropdownOpen(false);
+                                        }}
+                                        className={`w-full text-left px-3 py-2 text-xs transition-colors duration-150 cursor-pointer flex items-center justify-between ${selectedModel === model.name
+                                                ? "bg-primary/10 text-primary font-medium"
+                                                : "text-foreground/60 hover:bg-white/[0.05] hover:text-foreground/80"
+                                            }`}
+                                    >
+                                        <span className="truncate">{model.name}</span>
+                                        {model.size > 0 && (
+                                            <span className="text-[10px] text-foreground/25 ml-2 shrink-0">
+                                                {(model.size / 1e9).toFixed(1)}GB
+                                            </span>
+                                        )}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                    {availableModels.length === 0 && ollamaStatus === "connected" && (
+                        <span className="text-[10px] text-foreground/30">No models installed — run <code className="text-primary/60">ollama pull gemma3:4b</code></span>
+                    )}
                 </div>
 
                 {/* Messages — sole scrollable area */}
