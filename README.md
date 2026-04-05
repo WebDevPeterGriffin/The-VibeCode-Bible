@@ -50,8 +50,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to explore
 - **Defending Against Prompt Injections** — practical hardening techniques for local LLMs
 - **Real Project Walkthrough** — how I built Siteo in 3 days using this exact workflow
 
-### 🖥️ Built-in VibeCode AI Playground
-An interactive chat interface to safely test your prompts and skill files.
+### 🖥️ Built-in Local Chat
+An interactive chat interface to safely test your prompts and skill files entirely locally.
 - **Auto-Model Discovery** — Automatically detects your installed Ollama models (`http://localhost:11434/api/tags`)
 - **Zero Cost, Total Privacy** — Iterate on skill files totally offline and completely free
 - **Prompt Injection Hardened** — Built-in defenses via strict prompt boundaries and temperature lockdown
