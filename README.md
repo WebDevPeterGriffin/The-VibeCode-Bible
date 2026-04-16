@@ -42,7 +42,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to explore
 
 ## 🧠 What's Inside?
 
-### 📚 24 Lessons in 6 Categories
+### 📚 27 Lessons in 6 Categories
+- **Claude Opus 4.7 Updates** — utilizing extended thinking, Auto Mode, and file-system memory for complex agentic builds
 - **My Exact Setup** — the stack, extensions, folder structure, and settings I use daily
 - **The AGENTS.md System** — how I give AI agents permanent context so they stop making dumb mistakes
 - **Antigravity vs Claude Code** — when to use which one and why, from someone who uses both daily
@@ -55,6 +56,11 @@ An interactive chat interface to safely test your prompts and skill files entire
 - **Auto-Model Discovery** — Automatically detects your installed Ollama models (`http://localhost:11434/api/tags`)
 - **Zero Cost, Total Privacy** — Iterate on skill files totally offline and completely free
 - **Prompt Injection Hardened** — Built-in defenses via strict prompt boundaries and temperature lockdown
+
+### 🛡️ Quick Security Audit
+A dedicated sidebar panel that scans public GitHub repositories for hardcoded secrets, API keys, and database credentials using localized LLM analysis.
+- **Secure by Default** — runs completely locally via Ollama, ensuring code analysis doesn't leak sensitive config
+- **Terminal UI** — authentic audit reports with categorized severity (CRITICAL/HIGH/MEDIUM) levels
 
 ### 🤖 1,316 Bundled AI Agent Skills
 Pre-loaded and ready to use the second you clone. No extra installs needed.
