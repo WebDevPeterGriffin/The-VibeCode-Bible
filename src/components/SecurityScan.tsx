@@ -104,7 +104,7 @@ export default function SecurityScan() {
 
                 {/* Scan targets info */}
                 <div className="mt-3 flex flex-wrap gap-1.5">
-                    {[".env.example", "next.config.js", "supabase.ts", "stripe.ts", "db.ts", "config.ts"].map((f) => (
+                    {[".env", ".env.example", "next.config.*", "supabase.ts", "stripe.ts", "config.*", "docker-compose.yml"].map((f) => (
                         <span
                             key={f}
                             className="px-2 py-0.5 text-[10px] font-mono rounded-md bg-white/[0.03] border border-white/[0.06] text-foreground/30"

@@ -217,6 +217,63 @@ export const category: Category = {
                     "text": "This is the next chapter. Not just for this bible but for the industry. The builders who figure out how to govern agents effectively are the ones who will ship the products that matter in the next three years. That is what you are learning to do."
                 }
             ]
+        },
+        {
+            "id": "27",
+            "slug": "claude-opus-4-7",
+            "title": "27. Claude Opus 4.7 — What Changed",
+            "blocks": [
+                {
+                    "type": "p",
+                    "text": "Anthropic released Claude Opus 4.7 alongside an update to Claude Code. This is not a minor patch. It is a meaningful jump for anyone building with AI agents. Here is what actually changed and what it means for your workflow."
+                },
+                {
+                    "type": "h2",
+                    "text": "The model upgrade"
+                },
+                {
+                    "type": "p",
+                    "text": "Opus 4.7 ships with extended thinking that runs up to 128K tokens internally before it responds. That matters because complex multi-file refactors and architecture decisions require more reasoning than a quick response allows. The model now thinks longer before acting, which means fewer broken implementations on the first pass."
+                },
+                {
+                    "type": "callout",
+                    "variant": "fire",
+                    "text": "The tokenizer changed. Opus 4.7 uses a new tokenizer that produces different token counts than 4.6. Same prompt, different bill. Check your usage dashboards for the first week after switching."
+                },
+                {
+                    "type": "p",
+                    "text": "There is a new effort parameter that lets you control how hard the model works per request. Low effort for quick lookups and formatting. High or extra-high effort for complex reasoning, debugging, and architecture decisions. This is useful because not every prompt needs 128K tokens of internal reasoning — simple tasks should be fast and cheap."
+                },
+                {
+                    "type": "h2",
+                    "text": "File-system memory"
+                },
+                {
+                    "type": "p",
+                    "text": "Opus 4.7 is substantially better at file-system-based memory. It remembers important notes across long, multi-session work and uses them to move on to new tasks with less up-front context. If you are building agents that run for hours or across sessions, this is the unlock. Give the agent a scratchpad file, tell it to write notes as it works, and 4.7 will actually use them — something earlier models were inconsistent at."
+                },
+                {
+                    "type": "h2",
+                    "text": "Claude Code updates"
+                },
+                {
+                    "type": "p",
+                    "text": "Alongside the model release, Claude Code got two upgrades worth knowing about. There is a new /ultrareview command that runs a dedicated review session, reading through your changes and flagging what a careful reviewer would catch. Use it before committing anything non-trivial. Auto Mode — where Claude makes decisions without asking permission on each step — is now available for Max plan subscribers, not just Teams and Enterprise."
+                },
+                {
+                    "type": "callout",
+                    "variant": "idea",
+                    "text": "The migration playbook: switch your default model to Opus 4.7, set effort to high or xhigh, add /ultrareview to your commit workflow, and watch your token usage for the first week to catch the tokenizer bump. That is it."
+                },
+                {
+                    "type": "h2",
+                    "text": "When not to upgrade yet"
+                },
+                {
+                    "type": "p",
+                    "text": "If you have a heavily tuned prompt pipeline running on 4.6 in production and margins are tight, test 4.7 in staging first. The tokenizer change alone can push a barely-profitable workflow into unprofitable territory. Run a week of parallel traffic, measure actual token consumption, then decide. For everyone else — especially solo builders and agencies shipping client work — upgrade today."
+                }
+            ]
         }
     ]
 };

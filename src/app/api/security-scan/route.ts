@@ -1,13 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
-import Anthropic from "@anthropic-ai/sdk";
+
+const OLLAMA_BASE = "http://localhost:11434";
 
 const TARGET_FILES = [
+    ".env",
     ".env.example",
+    ".env.local",
+    ".env.production",
     "next.config.js",
+    "next.config.mjs",
+    "next.config.ts",
     "src/lib/supabase.ts",
     "src/lib/stripe.ts",
     "utils/db.ts",
     "config.ts",
+    "config.js",
+    "docker-compose.yml",
+    "Dockerfile",
 ];
 
 const SYSTEM_PROMPT = `You are a security auditor. Analyze the following code files for hardcoded secrets: API keys, passwords, JWT secrets, database credentials, private tokens. For each finding return: file name, secret type, severity (CRITICAL/HIGH/MEDIUM), risk description, and fix. Format as a clean report. If nothing found, say so.`;
@@ -44,6 +53,20 @@ async function fetchFileContent(owner: string, repo: string, branch: string, fil
     return null;
 }
 
+async function getFirstAvailableModel(): Promise<string | null> {
+    try {
+        const res = await fetch(`${OLLAMA_BASE}/api/tags`);
+        if (!res.ok) return null;
+        const data = await res.json();
+        if (data.models && data.models.length > 0) {
+            return data.models[0].name;
+        }
+        return null;
+    } catch {
+        return null;
+    }
+}
+
 export async function POST(req: NextRequest) {
     try {
         const { repoUrl } = await req.json();
@@ -58,6 +81,12 @@ export async function POST(req: NextRequest) {
         }
 
         const { owner, repo, branch } = parsed;
+
+        // Check Ollama is running and get a model
+        const model = await getFirstAvailableModel();
+        if (!model) {
+            return NextResponse.json({ error: "Ollama is not running or no models installed. Start Ollama and pull a model first." }, { status: 503 });
+        }
 
         // Fetch all target files in parallel
         const results = await Promise.all(
@@ -75,40 +104,37 @@ export async function POST(req: NextRequest) {
             });
         }
 
-        // Build the code context for Claude
+        // Build the code context
         const codeContext = foundFiles
             .map((f) => `--- FILE: ${f.filePath} ---\n${f.content}\n--- END FILE ---`)
             .join("\n\n");
 
-        const apiKey = process.env.ANTHROPIC_API_KEY;
-        if (!apiKey) {
-            return NextResponse.json({ error: "ANTHROPIC_API_KEY not configured on server" }, { status: 500 });
-        }
+        const userPrompt = `Repository: ${owner}/${repo}\nFiles found: ${foundFiles.map((f) => f.filePath).join(", ")}\nFiles not found (skipped): ${results.filter((r) => r.content === null).map((r) => r.filePath).join(", ") || "none"}\n\n${codeContext}`;
 
-        const client = new Anthropic({ apiKey });
-
-        const message = await client.messages.create({
-            model: "claude-sonnet-4-20250514",
-            max_tokens: 2048,
-            messages: [
-                {
-                    role: "user",
-                    content: `Repository: ${owner}/${repo}\nFiles found: ${foundFiles.map((f) => f.filePath).join(", ")}\nFiles not found (skipped): ${results.filter((r) => r.content === null).map((r) => r.filePath).join(", ") || "none"}\n\n${codeContext}`,
-                },
-            ],
-            system: SYSTEM_PROMPT,
+        // Call Ollama (non-streaming, wait for full response)
+        const ollamaRes = await fetch(`${OLLAMA_BASE}/api/chat`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                model,
+                messages: [
+                    { role: "system", content: SYSTEM_PROMPT },
+                    { role: "user", content: userPrompt },
+                ],
+                stream: false,
+                options: { temperature: 0.3 },
+            }),
         });
 
-        const reportText = message.content
-            .filter((block) => block.type === "text")
-            .map((block) => {
-                if (block.type === "text") return block.text;
-                return "";
-            })
-            .join("\n");
+        if (!ollamaRes.ok) {
+            return NextResponse.json({ error: "Ollama failed to process the request" }, { status: 502 });
+        }
+
+        const ollamaData = await ollamaRes.json();
+        const reportText = ollamaData.message?.content || "No response from model.";
 
         return NextResponse.json({
-            report: `## Security Audit — ${owner}/${repo}\n**Files scanned:** ${foundFiles.map((f) => f.filePath).join(", ")}\n**Files skipped (404):** ${results.filter((r) => r.content === null).map((r) => r.filePath).join(", ") || "none"}\n\n---\n\n${reportText}`,
+            report: `## Security Audit — ${owner}/${repo}\n**Model:** ${model}\n**Files scanned:** ${foundFiles.map((f) => f.filePath).join(", ")}\n**Files skipped (404):** ${results.filter((r) => r.content === null).map((r) => r.filePath).join(", ") || "none"}\n\n---\n\n${reportText}`,
         });
     } catch (err) {
         console.error("Security scan error:", err);

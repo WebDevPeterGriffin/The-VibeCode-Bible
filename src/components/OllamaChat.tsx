@@ -63,6 +63,13 @@ LESSONS LEARNED:
 - [Mistakes I Made](/mistakes-i-made) — Common traps: trusting AI blindly, not reading generated code, skipping types, no git commits.
 - [Resources](/resources) — Curated links to Supabase docs, Vercel, Resend, Stripe, OpenAI.
 
+AGENTIC ENGINEERING:
+- [Vibe Coding Is Dead](/vibe-coding-is-dead) — Why pure vibe coding failed at scale. Code churn up 41%, duplication up 4x.
+- [Why It Really Broke Down](/why-it-really-broke-down) — The three skipped steps: design, review, testing. The prototype trap.
+- [Meet Agentic Engineering](/meet-agentic-engineering) — Same tools, new mindset. You are the governor, the AI is the workforce.
+- [The Agentic Workflow](/the-agentic-workflow) — The 6-step loop: design first, scaffold with constraints, build in small loops, review every diff, test golden path, ship early.
+- [Claude Opus 4.7 — What Changed](/claude-opus-4-7) — Extended thinking up to 128K tokens, new tokenizer, effort parameter, file-system memory, /ultrareview command, Auto Mode for Max subscribers.
+
 KEY CONCEPTS:
 - AGENTS.md — A file at your project root that gives AI permanent context about your stack, rules, and skill file locations. Every AI agent reads it automatically.
 - Skill Files — .md files in .agent/skills/ injected into the AI system prompt. They carry design systems, API patterns, security rules. "Raw prompts get you 60%, skill files get the rest."
@@ -502,8 +509,8 @@ export default function OllamaChat() {
                                             setModelDropdownOpen(false);
                                         }}
                                         className={`w-full text-left px-3 py-2 text-xs transition-colors duration-150 cursor-pointer flex items-center justify-between ${selectedModel === model.name
-                                                ? "bg-primary/10 text-primary font-medium"
-                                                : "text-foreground/60 hover:bg-white/[0.05] hover:text-foreground/80"
+                                            ? "bg-primary/10 text-primary font-medium"
+                                            : "text-foreground/60 hover:bg-white/[0.05] hover:text-foreground/80"
                                             }`}
                                     >
                                         <span className="truncate">{model.name}</span>
