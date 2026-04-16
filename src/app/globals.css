@@ -107,3 +107,18 @@
     transform: scale(1) translateY(0);
   }
 }
+
+/* Security scan progress bar animation */
+@keyframes scan {
+
+  0%,
+  100% {
+    transform: translateX(-30%);
+    opacity: 0.6;
+  }
+
+  50% {
+    transform: translateX(30%);
+    opacity: 1;
+  }
+}

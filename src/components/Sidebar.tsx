@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { content } from '@/data/content';
 import { useEffect, useState } from 'react';
-import { PanelLeftClose, PanelLeft, ChevronRight, MessageSquare, Wrench } from 'lucide-react';
+import { PanelLeftClose, PanelLeft, ChevronRight, MessageSquare, Wrench, Shield } from 'lucide-react';
 
 export default function Sidebar() {
     const pathname = usePathname();
@@ -192,18 +192,30 @@ export default function Sidebar() {
                 </div>
             </div>
 
-            {/* Bottom — Local Chat + Progress */}
+            {/* Bottom — Local Chat + Security Scan + Progress */}
             <div className={`p-3 border-t border-white/[0.04] flex-col gap-2 mt-auto ${collapsed ? 'hidden' : 'hidden md:flex'}`}>
-                <Link
-                    href="/playground"
-                    className={`flex items-center justify-center gap-2 px-3 py-2 rounded-lg transition-all duration-200 text-xs font-medium border cursor-pointer ${pathname === '/playground'
-                        ? 'border-primary/30 bg-primary/10 text-primary shadow-[0_0_16px_rgba(124,58,237,0.1)]'
-                        : 'border-white/[0.06] bg-white/[0.02] text-foreground/50 hover:text-primary hover:border-primary/20 hover:bg-primary/[0.05]'
-                        }`}
-                >
-                    <MessageSquare size={13} />
-                    Local Chat
-                </Link>
+                <div className="flex gap-1.5">
+                    <Link
+                        href="/playground"
+                        className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-2 rounded-lg transition-all duration-200 text-xs font-medium border cursor-pointer ${pathname === '/playground'
+                            ? 'border-primary/30 bg-primary/10 text-primary shadow-[0_0_16px_rgba(124,58,237,0.1)]'
+                            : 'border-white/[0.06] bg-white/[0.02] text-foreground/50 hover:text-primary hover:border-primary/20 hover:bg-primary/[0.05]'
+                            }`}
+                    >
+                        <MessageSquare size={13} />
+                        Local Chat
+                    </Link>
+                    <Link
+                        href="/security-scan"
+                        className={`flex-1 flex items-center justify-center gap-1.5 px-2 py-2 rounded-lg transition-all duration-200 text-xs font-medium border cursor-pointer ${pathname === '/security-scan'
+                            ? 'border-primary/30 bg-primary/10 text-primary shadow-[0_0_16px_rgba(124,58,237,0.1)]'
+                            : 'border-white/[0.06] bg-white/[0.02] text-foreground/50 hover:text-primary hover:border-primary/20 hover:bg-primary/[0.05]'
+                            }`}
+                    >
+                        <Shield size={13} />
+                        Security Scan
+                    </Link>
+                </div>
                 <div className="text-[10px] text-foreground/20 text-center mt-1">
                     {completedCount} / {totalSections} completed
                 </div>
