@@ -7,6 +7,7 @@ import { category as debuggingAndTesting } from './categories/05-debugging-and-t
 import { category as localAiSetup } from './categories/06-local-ai-setup';
 import { category as lessonsLearned } from './categories/07-lessons-learned';
 import { category as agenticEngineering } from './categories/08-agentic-engineering';
+import { category as aiAdPipelines } from './categories/09-ai-ad-pipelines';
 
 export const content: Category[] = [
     gettingStarted,
@@ -17,4 +18,5 @@ export const content: Category[] = [
     localAiSetup,
     lessonsLearned,
     agenticEngineering,
+    aiAdPipelines,
 ];
