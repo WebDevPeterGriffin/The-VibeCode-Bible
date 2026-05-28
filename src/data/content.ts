@@ -1,12 +1,26 @@
 import { Category } from './types';
-import { category as foundation } from './categories/01-foundation';
-import { category as buildingAndShipping } from './categories/02-building-and-shipping';
-import { category as localAiAndAgentic } from './categories/03-local-ai-and-agentic';
-import { category as advancedAndScale } from './categories/04-advanced-and-scale';
+import { category as gettingStarted } from './categories/01-getting-started';
+import { category as theTools } from './categories/02-the-tools';
+import { category as theMethodology } from './categories/03-the-methodology';
+import { category as buildingProducts } from './categories/04-building-products';
+import { category as debuggingAndTesting } from './categories/05-debugging-and-testing';
+import { category as localAiSetup } from './categories/06-local-ai-setup';
+import { category as lessonsLearned } from './categories/07-lessons-learned';
+import { category as agenticEngineering } from './categories/08-agentic-engineering';
+import { category as aiAdPipelines } from './categories/09-ai-ad-pipelines';
+import { category as powerTools } from './categories/10-power-tools';
+import { category as buildSystems } from './categories/11-build-systems';
 
 export const content: Category[] = [
-    foundation,
-    buildingAndShipping,
-    localAiAndAgentic,
-    advancedAndScale,
+    gettingStarted,
+    theTools,
+    theMethodology,
+    buildingProducts,
+    debuggingAndTesting,
+    localAiSetup,
+    lessonsLearned,
+    agenticEngineering,
+    aiAdPipelines,
+    powerTools,
+    buildSystems,
 ];

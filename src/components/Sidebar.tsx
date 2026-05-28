@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { content } from '@/data/content';
+import { BUCKETS } from '@/data/buckets';
 import { useEffect, useState } from 'react';
 import { PanelLeftClose, PanelLeft, ChevronRight, MessageSquare, Wrench, Shield } from 'lucide-react';
 
@@ -113,60 +114,74 @@ export default function Sidebar() {
             {/* Nav items — hidden when collapsed on desktop */}
             <div className={`flex-1 overflow-y-auto custom-scrollbar px-3 pb-6 ${collapsed ? 'hidden' : 'hidden md:block'}`}>
                 <div className="space-y-1">
-                    {content.map((category) => {
-                        const isOpen = openCategories.includes(category.id);
-                        const hasActivePage = category.sections.some(s => pathname === `/${s.slug}`);
+                    {BUCKETS.map((bucket, bucketIndex) => {
+                        const bucketCategories = content.filter(c => bucket.categoryIds.includes(c.id));
 
                         return (
-                            <div key={category.id} className="mb-1">
-                                {/* Category Header — clickable to toggle */}
-                                <button
-                                    onClick={() => toggleCategory(category.id)}
-                                    className={`w-full flex items-center gap-1.5 px-3 py-2 rounded-md transition-all duration-200 cursor-pointer group ${hasActivePage
-                                        ? 'text-primary/70'
-                                        : 'text-foreground/30 hover:text-foreground/50 hover:bg-white/[0.02]'
-                                        }`}
-                                >
-                                    <ChevronRight
-                                        size={11}
-                                        className={`transition-transform duration-200 shrink-0 ${isOpen ? 'rotate-90' : ''}`}
-                                    />
-                                    <span className="text-[10px] font-semibold uppercase tracking-[0.15em] truncate">
-                                        {category.title}
+                            <div key={bucket.label} className={bucketIndex > 0 ? 'mt-3 pt-3 border-t border-white/[0.04]' : ''}>
+                                {/* Bucket header */}
+                                <div className="flex items-center gap-1.5 px-3 mb-1">
+                                    <span className="text-[9px] font-bold text-foreground/20 uppercase tracking-[0.2em]">
+                                        {bucket.label}
                                     </span>
-                                </button>
-
-                                {/* Category Items — animate height */}
-                                <div
-                                    className="overflow-hidden transition-all duration-200 ease-in-out"
-                                    style={{
-                                        maxHeight: isOpen ? `${category.sections.length * 36}px` : '0px',
-                                        opacity: isOpen ? 1 : 0,
-                                    }}
-                                >
-                                    <div className="space-y-px ml-1 mt-0.5">
-                                        {category.sections.map((section) => {
-                                            const isActive = pathname === `/${section.slug}`;
-                                            const isRead = progress.includes(section.slug);
-
-                                            return (
-                                                <Link
-                                                    key={section.slug}
-                                                    href={`/${section.slug}`}
-                                                    className={`relative flex items-center gap-2.5 px-3 py-1.5 rounded-md transition-all duration-200 text-[13px] cursor-pointer ${isActive
-                                                        ? 'bg-primary/[0.08] text-primary font-medium border-l-2 border-primary'
-                                                        : 'text-foreground/40 hover:text-foreground/70 hover:bg-white/[0.03] border-l-2 border-transparent'
-                                                        }`}
-                                                >
-                                                    {/* Progress indicator */}
-                                                    <div className={`w-1 h-1 rounded-full transition-colors duration-200 ${isRead ? 'bg-primary/60' : 'bg-foreground/10'
-                                                        }`} />
-                                                    <span className="line-clamp-1">{section.title.replace(/^\d+\.\s*/, '')}</span>
-                                                </Link>
-                                            );
-                                        })}
-                                    </div>
                                 </div>
+
+                                {/* Topics inside this bucket */}
+                                {bucketCategories.map((category) => {
+                                    const isOpen = openCategories.includes(category.id);
+                                    const hasActivePage = category.sections.some(s => pathname === `/${s.slug}`);
+
+                                    return (
+                                        <div key={category.id} className="mb-0.5">
+                                            {/* Topic header — clickable to toggle */}
+                                            <button
+                                                onClick={() => toggleCategory(category.id)}
+                                                className={`w-full flex items-center gap-1.5 px-3 py-1.5 rounded-md transition-all duration-200 cursor-pointer group ${hasActivePage
+                                                    ? 'text-primary/70'
+                                                    : 'text-foreground/30 hover:text-foreground/50 hover:bg-white/[0.02]'
+                                                    }`}
+                                            >
+                                                <ChevronRight
+                                                    size={10}
+                                                    className={`transition-transform duration-200 shrink-0 ${isOpen ? 'rotate-90' : ''}`}
+                                                />
+                                                <span className="text-[10px] font-semibold uppercase tracking-[0.15em] truncate">
+                                                    {category.title}
+                                                </span>
+                                            </button>
+
+                                            {/* Sections inside this topic */}
+                                            <div
+                                                className="overflow-hidden transition-all duration-200 ease-in-out"
+                                                style={{
+                                                    maxHeight: isOpen ? `${category.sections.length * 36}px` : '0px',
+                                                    opacity: isOpen ? 1 : 0,
+                                                }}
+                                            >
+                                                <div className="space-y-px ml-1 mt-0.5">
+                                                    {category.sections.map((section) => {
+                                                        const isActive = pathname === `/${section.slug}`;
+                                                        const isRead = progress.includes(section.slug);
+
+                                                        return (
+                                                            <Link
+                                                                key={section.slug}
+                                                                href={`/${section.slug}`}
+                                                                className={`relative flex items-center gap-2.5 px-3 py-1.5 rounded-md transition-all duration-200 text-[13px] cursor-pointer ${isActive
+                                                                    ? 'bg-primary/[0.08] text-primary font-medium border-l-2 border-primary'
+                                                                    : 'text-foreground/40 hover:text-foreground/70 hover:bg-white/[0.03] border-l-2 border-transparent'
+                                                                    }`}
+                                                            >
+                                                                <div className={`w-1 h-1 rounded-full transition-colors duration-200 ${isRead ? 'bg-primary/60' : 'bg-foreground/10'}`} />
+                                                                <span className="line-clamp-1">{section.title.replace(/^\d+\.\s*/, '')}</span>
+                                                            </Link>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
                             </div>
                         );
                     })}
