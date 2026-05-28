@@ -8,6 +8,8 @@ import { category as localAiSetup } from './categories/06-local-ai-setup';
 import { category as lessonsLearned } from './categories/07-lessons-learned';
 import { category as agenticEngineering } from './categories/08-agentic-engineering';
 import { category as aiAdPipelines } from './categories/09-ai-ad-pipelines';
+import { category as powerTools } from './categories/10-power-tools';
+import { category as buildSystems } from './categories/11-build-systems';
 
 export const content: Category[] = [
     gettingStarted,
@@ -19,4 +21,6 @@ export const content: Category[] = [
     lessonsLearned,
     agenticEngineering,
     aiAdPipelines,
+    powerTools,
+    buildSystems,
 ];
