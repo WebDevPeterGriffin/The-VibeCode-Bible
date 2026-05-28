@@ -41,6 +41,9 @@ next-env.d.ts
 # generated files
 push_error.txt
 
+# brand PDFs / Skool resources — local only, never push
+public/pdfs/
+
 # python
 __pycache__/
 *.py[cod]
