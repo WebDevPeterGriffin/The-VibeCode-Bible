@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { content } from '@/data/content';
 import { BUCKETS } from '@/data/buckets';
 import { useEffect, useState } from 'react';
-import { PanelLeftClose, PanelLeft, ChevronRight, MessageSquare, Wrench, Shield } from 'lucide-react';
+import { PanelLeftClose, PanelLeft, ChevronRight, MessageSquare, Wrench, Shield, Plug, Search } from 'lucide-react';
 
 export default function Sidebar() {
     const pathname = usePathname();
@@ -203,6 +203,26 @@ export default function Sidebar() {
                             }`}
                     >
                         Skills & Workflows
+                    </Link>
+                    <Link
+                        href="/mcp-servers"
+                        className={`flex items-center gap-2.5 px-3 py-1.5 rounded-md transition-all duration-200 text-[13px] cursor-pointer ml-1 ${pathname === '/mcp-servers'
+                            ? 'bg-primary/[0.08] text-primary font-medium border-l-2 border-primary'
+                            : 'text-foreground/40 hover:text-foreground/70 hover:bg-white/[0.03] border-l-2 border-transparent'
+                            }`}
+                    >
+                        <Plug size={11} className="opacity-60" />
+                        MCP Servers
+                    </Link>
+                    <Link
+                        href="/geo-seo"
+                        className={`flex items-center gap-2.5 px-3 py-1.5 rounded-md transition-all duration-200 text-[13px] cursor-pointer ml-1 ${pathname === '/geo-seo'
+                            ? 'bg-primary/[0.08] text-primary font-medium border-l-2 border-primary'
+                            : 'text-foreground/40 hover:text-foreground/70 hover:bg-white/[0.03] border-l-2 border-transparent'
+                            }`}
+                    >
+                        <Search size={11} className="opacity-60" />
+                        GEO + SEO
                     </Link>
                 </div>
             </div>
