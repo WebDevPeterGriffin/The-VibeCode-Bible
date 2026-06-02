@@ -219,6 +219,42 @@ export const category: Category = {
             ]
         },
         {
+            "id": "28",
+            "slug": "agent-harness",
+            "title": "28. Agent Harness",
+            "blocks": [
+                {
+                    "type": "p",
+                    "text": "Agent Harness is the layer that controls what the model sees, what tools it uses, and when it stops. It is what turns a single model call into a full workflow — research, write code, call APIs, check its own output, retry after errors, complete longer tasks."
+                },
+                {
+                    "type": "callout",
+                    "variant": "skull",
+                    "text": "Without a harness, you do not have an agent. You have a fancy API call."
+                },
+                {
+                    "type": "h2",
+                    "text": "What a harness manages"
+                },
+                {
+                    "type": "ul",
+                    "items": [
+                        "Context — what information the model receives",
+                        "Tools — what actions the model can take",
+                        "Loop logic — when to continue, when to stop, when to retry"
+                    ]
+                },
+                {
+                    "type": "h2",
+                    "text": "Why it matters now"
+                },
+                {
+                    "type": "p",
+                    "text": "AI engineering roles are starting to list harness engineering as a core skill. Most developers have never heard of it. The ones who learn it early will build agents that actually work in production — not just in demos."
+                }
+            ]
+        },
+        {
             "id": "27",
             "slug": "claude-opus-4-7",
             "title": "27. Claude Opus 4.7 — What Changed",

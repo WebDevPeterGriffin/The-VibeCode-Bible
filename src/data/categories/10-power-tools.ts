@@ -213,6 +213,90 @@ export const category: Category = {
                     "text": "Start with internal tools and dashboards — admin panels, your own SaaS, your client's CMS. Those are the highest-leverage automations and the easiest to get running because there are no anti-bot measures. Once the pattern is clear, move to external sites."
                 }
             ]
+        },
+        {
+            "id": "37",
+            "slug": "hermes-agent",
+            "title": "37. Hermes Agent — The AI That Grows With You",
+            "blocks": [
+                {
+                    "type": "p",
+                    "text": "Hermes Agent by NousResearch has 156k GitHub stars for a reason. It is not a chatbot wrapper or a prompt playground. It is a self-improving AI agent with a built-in learning loop that runs 24/7, remembers everything about how you work, and gets meaningfully better every session. Most AI tools start blank every time you open them. Hermes builds a model of you and your workflow over weeks and months."
+                },
+                {
+                    "type": "callout",
+                    "variant": "fire",
+                    "text": "After two weeks of daily use, Hermes knows your stack, your preferences, and the shortcuts you always reach for. It starts anticipating what you need before you ask. No other open-source agent does this at this level."
+                },
+                {
+                    "type": "h2",
+                    "text": "What Makes It Different"
+                },
+                {
+                    "type": "ul",
+                    "items": [
+                        "Persistent memory — remembers your stack, preferences, and past decisions across every session",
+                        "Skill creation — after complex tasks it auto-generates a reusable skill so it never has to relearn the same thing",
+                        "Self-improving skills — each skill gets better every time it runs, not just stored and forgotten",
+                        "Cron scheduler — set it to run daily reports, nightly backups, or weekly audits in natural language",
+                        "Parallel subagents — splits large tasks across isolated agents running simultaneously",
+                        "Messaging gateway — Telegram, Discord, Slack, WhatsApp, Signal — talk to it from your phone while it works on a VPS",
+                        "Model agnostic — 200+ models via OpenRouter, or your own endpoint, switch with one command"
+                    ]
+                },
+                {
+                    "type": "h2",
+                    "text": "The Setup"
+                },
+                {
+                    "type": "p",
+                    "text": "One curl command installs everything — Python, Node, ripgrep, ffmpeg, and Hermes itself. Then you pick your model and optionally connect a messaging platform. The whole thing takes under five minutes."
+                },
+                {
+                    "type": "code",
+                    "language": "bash",
+                    "code": "# Install\ncurl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash\nsource ~/.bashrc\n\n# Start\nhermes\n\n# Pick your model (200+ options)\nhermes model\n\n# Connect Telegram so it can reach you anywhere\nhermes gateway"
+                },
+                {
+                    "type": "h2",
+                    "text": "The $5 VPS Workflow"
+                },
+                {
+                    "type": "p",
+                    "text": "The most powerful way to run Hermes is not on your laptop. Spin up a $5 VPS on Hetzner or DigitalOcean, install Hermes there, connect your Telegram, and let it run 24/7 unattended. You message it from your phone. It works in the cloud. You come back to completed tasks."
+                },
+                {
+                    "type": "ol",
+                    "items": [
+                        "Provision a $5 VPS — Ubuntu 22.04, any provider",
+                        "SSH in and run the Hermes install script",
+                        "Run hermes setup to configure your model and API keys",
+                        "Run hermes gateway to connect Telegram",
+                        "Message your Hermes bot from Telegram — it is live",
+                        "Use screen or tmux to keep it running after you disconnect",
+                        "Set cron jobs for recurring tasks — daily summaries, repo digests, whatever you need"
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "zap",
+                    "text": "Pro tip: Give Hermes a SOUL.md file — a persona document that describes how you want it to communicate, what projects it is working on, and what your standards are. It reads this every session. The difference between Hermes with and without a good SOUL.md is enormous."
+                },
+                {
+                    "type": "h2",
+                    "text": "Ready-to-use Claude Code Prompt"
+                },
+                {
+                    "type": "code",
+                    "language": "text",
+                    "code": "Help me set up Hermes Agent on a remote VPS and connect it to Telegram.\n\nMy setup:\n- VPS provider: [Hetzner / DigitalOcean / other]\n- OS: Ubuntu 22.04\n- Model I want to use: [OpenRouter / OpenAI / Anthropic]\n- Telegram bot already created: [yes / no]\n\nSteps I need help with:\n1. SSH into the VPS and run the Hermes install script\n2. Configure my model API key securely\n3. Set up the Telegram gateway so I can message it from my phone\n4. Create a basic SOUL.md that captures my stack and working style\n5. Set a cron job that sends me a daily summary of what Hermes worked on\n\nWalk me through each step and flag anything I need to do manually."
+                },
+                {
+                    "type": "callout",
+                    "variant": "skull",
+                    "text": "Do not run Hermes on your main development machine long-term. It has shell access and runs autonomously. A dedicated VPS keeps it isolated from your local environment and lets it run 24/7 without draining your battery or taking up memory."
+                }
+            ]
         }
     ]
 };
