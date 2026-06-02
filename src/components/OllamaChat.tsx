@@ -69,12 +69,28 @@ AGENTIC ENGINEERING:
 - [Meet Agentic Engineering](/meet-agentic-engineering) — Same tools, new mindset. You are the governor, the AI is the workforce.
 - [The Agentic Workflow](/the-agentic-workflow) — The 6-step loop: design first, scaffold with constraints, build in small loops, review every diff, test golden path, ship early.
 - [Claude Opus 4.7 — What Changed](/claude-opus-4-7) — Extended thinking up to 128K tokens, new tokenizer, effort parameter, file-system memory, /ultrareview command, Auto Mode for Max subscribers.
+- [Agent Harness](/agent-harness) — The layer that controls what the model sees, what tools it uses, and when it stops. Without a harness you don't have an agent, you have a fancy API call. Manages context, tools, and loop logic.
+
+AGENT HARNESS ENGINEERING:
+- [The Anatomy of a Harness](/anatomy-of-a-harness) — The three layers every harness must have: context (what the model sees), tools (what it can do), and loop logic (when to continue, stop, or retry). Includes context debt, tool design principles, and the four loop outcomes: continue, stop, retry, abort.
+- [Building Your First Harness](/building-your-first-harness) — Full working Python harness from scratch using the Anthropic SDK. Covers the minimal pattern, system prompt engineering for agents, and two-level retry logic (API retries + semantic self-correction).
+- [Harness Engineering in Production](/harness-engineering-in-production) — Structured logging on every tool call, cost control via context summarisation and prompt caching, semantic error recovery, and the full production readiness checklist. Why this is becoming a required skill at top AI teams.
 
 KEY CONCEPTS:
 - AGENTS.md — A file at your project root that gives AI permanent context about your stack, rules, and skill file locations. Every AI agent reads it automatically.
 - Skill Files — .md files in .agent/skills/ injected into the AI system prompt. They carry design systems, API patterns, security rules. "Raw prompts get you 60%, skill files get the rest."
 - Workflow Files — Step-by-step .md scripts in .agent/workflows/ that AI agents execute sequentially. Invoked via slash commands like /code-review or /deploy-checklist.
 - The repo ships with 1,316 pre-loaded skill files and 10 executable workflows.
+
+LOCAL AI SETUP:
+- Content covering how to run AI models locally with Ollama, avoiding API costs, and setting up a private AI stack.
+
+POWER TOOLS:
+- [Hermes Agent — The AI That Grows With You](/hermes-agent) — NousResearch open-source agent with 156k GitHub stars. Persistent memory, self-improving skills, cron scheduler, parallel subagents, messaging gateway (Telegram/Discord/Slack), model-agnostic. Best deployed on a $5 VPS running 24/7. Includes a SOUL.md persona system and full Claude Code setup prompt.
+
+EXTRA PAGES:
+- [MCP Servers](/mcp-servers) — Reference guide to Model Context Protocol servers and how to use them with AI agents.
+- [GEO + SEO](/geo-seo) — Generative Engine Optimization and SEO reference for AI-powered search visibility.
 
 BUNDLED SKILL PACKS:
 - Awesome CursorRules (1,242 files) — framework-specific rules for Next.js, React, Python, etc.
