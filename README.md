@@ -42,20 +42,40 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to explore
 
 ## 🧠 What's Inside?
 
-### 📚 27 Lessons in 6 Categories
-- **Claude Opus 4.7 Updates** — utilizing extended thinking, Auto Mode, and file-system memory for complex agentic builds
+### 📚 40+ Lessons across 4 Topic Areas
+
+**Foundation**
 - **My Exact Setup** — the stack, extensions, folder structure, and settings I use daily
 - **The AGENTS.md System** — how I give AI agents permanent context so they stop making dumb mistakes
 - **Antigravity vs Claude Code** — when to use which one and why, from someone who uses both daily
-- **Setting Up Local AI** — installing Ollama, pulling models, and running local AI with zero API costs
-- **Defending Against Prompt Injections** — practical hardening techniques for local LLMs
+- **The Vibe Coding Workflow** — the full 7-step process from brain dump to production deploy
+
+**Building & Shipping**
 - **Real Project Walkthrough** — how I built Siteo in 3 days using this exact workflow
+- **Supabase RLS Patterns** — Row Level Security done right, with AI generating every migration
+- **Beating the Generic AI Look** — skill files and design tokens that stop AI-generated aesthetics
+
+**Local AI & Agentic**
+- **Setting Up Local AI** — installing Ollama, pulling models, and running local AI with zero API costs
+- **Vibe Coding Is Dead** — why pure vibe coding failed at scale and what replaced it
+- **Agentic Engineering** — you are the governor, the AI is the workforce
+- **Agent Harness Engineering** — the layer that controls what the model sees, what tools it uses, and when it stops. Covers the anatomy of a harness, building your first one from scratch, and running harnesses in production with observability and cost control
+
+**Advanced & Scale**
+- **Claude Opus 4.7 Updates** — extended thinking, new tokenizer, effort parameter, /ultrareview
+- **Hermes Agent** — the open-source self-improving agent with 156k GitHub stars. Runs 24/7 on a $5 VPS
+- **Defending Against Prompt Injections** — practical hardening techniques for local LLMs
 
 ### 🖥️ Built-in Local Chat
-An interactive chat interface to safely test your prompts and skill files entirely locally.
+An interactive chat interface to safely test your prompts and skill files entirely locally. The assistant knows the full content map of the bible and links directly to lessons.
 - **Auto-Model Discovery** — Automatically detects your installed Ollama models (`http://localhost:11434/api/tags`)
 - **Zero Cost, Total Privacy** — Iterate on skill files totally offline and completely free
 - **Prompt Injection Hardened** — Built-in defenses via strict prompt boundaries and temperature lockdown
+- **Multi-session** — Full chat history with named sessions, persisted in localStorage
+
+### 🌐 Extra Pages
+- **MCP Servers** (`/mcp-servers`) — Reference guide to Model Context Protocol servers and how to use them with AI agents
+- **GEO + SEO** (`/geo-seo`) — Generative Engine Optimization reference for AI-powered search visibility (ChatGPT, Perplexity, Google AI Overviews)
 
 ### 🛡️ Quick Security Audit
 A dedicated sidebar panel that scans public GitHub repositories for hardcoded secrets, API keys, and database credentials using localized LLM analysis.
