@@ -14,7 +14,7 @@ export const BUCKETS: Bucket[] = [
     },
     {
         label: 'Local AI & Agentic',
-        categoryIds: ['cat-6', 'cat-8'],
+        categoryIds: ['cat-6', 'cat-8', 'cat-12'],
     },
     {
         label: 'Advanced & Scale',
