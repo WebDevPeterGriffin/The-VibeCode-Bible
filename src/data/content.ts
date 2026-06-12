@@ -11,6 +11,7 @@ import { category as aiAdPipelines } from './categories/09-ai-ad-pipelines';
 import { category as powerTools } from './categories/10-power-tools';
 import { category as buildSystems } from './categories/11-build-systems';
 import { category as agentHarnessEngineering } from './categories/12-agent-harness-engineering';
+import { category as fineTuningAndLoras } from './categories/13-fine-tuning-and-loras';
 
 export const content: Category[] = [
     gettingStarted,
@@ -22,6 +23,7 @@ export const content: Category[] = [
     lessonsLearned,
     agenticEngineering,
     agentHarnessEngineering,
+    fineTuningAndLoras,
     aiAdPipelines,
     powerTools,
     buildSystems,

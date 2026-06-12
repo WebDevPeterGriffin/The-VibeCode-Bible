@@ -76,6 +76,15 @@ AGENT HARNESS ENGINEERING:
 - [Building Your First Harness](/building-your-first-harness) — Full working Python harness from scratch using the Anthropic SDK. Covers the minimal pattern, system prompt engineering for agents, and two-level retry logic (API retries + semantic self-correction).
 - [Harness Engineering in Production](/harness-engineering-in-production) — Structured logging on every tool call, cost control via context summarisation and prompt caching, semantic error recovery, and the full production readiness checklist. Why this is becoming a required skill at top AI teams.
 
+FINE-TUNING & LORAS:
+- [What Is a LoRA?](/what-is-a-lora) — Beginner-friendly intro. A LoRA (Low-Rank Adaptation) is a small add-on file that teaches an existing model new behaviour without retraining it. Freezes the base model, trains a tiny swappable adapter on top. Tiny files, cheap to train, does not forget.
+- [LoRA vs Prompting vs Full Fine-Tuning](/lora-vs-prompting-vs-fine-tuning) — The three-rung ladder for changing AI behaviour. When prompting/RAG is enough, when a LoRA earns its keep, and why you almost never need full fine-tuning. KEY RULE: a LoRA teaches style/skill, NOT facts — use RAG for facts.
+- [How a LoRA Works Under the Hood](/how-a-lora-works-under-the-hood) — The low-rank math made simple: frozen weights plus two skinny matrices. Explains rank, alpha, dropout, target modules (q_proj/k_proj/v_proj/o_proj), and QLoRA (4-bit training on consumer GPUs).
+- [What You Need to Train a LoRA](/what-you-need-to-train-a-lora) — The dataset is 90% of the job. JSONL instruction/chat formats, how many examples you need, and the tools (Unsloth, Axolotl, PEFT+TRL, LLaMA-Factory) plus hardware/VRAM guidance.
+- [Training Your First LoRA](/training-your-first-lora) — Full step-by-step Unsloth pipeline with code: load 4-bit base, attach adapter, format data, train with SFTTrainer, save. Explains epochs, learning rate, batch size, and watching the loss.
+- [Using Your LoRA With Local Agents](/using-your-lora-with-local-agents) — Bridging training to Ollama. Path A: merge to GGUF and import via Modelfile. Path B: keep the adapter separate with the ADAPTER directive. Wiring the fine-tuned model into your agent harness.
+- [LoRA Pitfalls & Best Practices](/lora-pitfalls-and-best-practices) — Overfitting, catastrophic forgetting, training on facts, format mismatch, inconsistent data — and the pre-flight checklist that avoids all of them.
+
 KEY CONCEPTS:
 - AGENTS.md — A file at your project root that gives AI permanent context about your stack, rules, and skill file locations. Every AI agent reads it automatically.
 - Skill Files — .md files in .agent/skills/ injected into the AI system prompt. They carry design systems, API patterns, security rules. "Raw prompts get you 60%, skill files get the rest."
