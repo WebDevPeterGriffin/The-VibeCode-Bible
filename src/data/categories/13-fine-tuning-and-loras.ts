@@ -142,8 +142,86 @@ export const category: Category = {
         },
         {
             "id": "45",
+            "slug": "skill-files-vs-loras",
+            "title": "45. Skill Files vs LoRAs",
+            "blocks": [
+                {
+                    "type": "p",
+                    "text": "Imagine you hire a chef. There are two ways to get them cooking your grandma's secret soup. The first way: you tape the recipe card to the kitchen wall so they read it every time they cook. The second way: you have them make the soup five hundred times until they could do it blindfolded and never glance at a card again. The recipe taped to the wall is a skill file. The five hundred practice runs are a LoRA."
+                },
+                {
+                    "type": "callout",
+                    "variant": "idea",
+                    "text": "A skill file is read at runtime — the model looks at it fresh on every single message. A LoRA is baked into the model — it never looks anything up, it just knows. Same goal, completely different mechanism. This is the most important distinction to get straight before you ever train anything."
+                },
+                {
+                    "type": "h2",
+                    "text": "What a skill file actually is"
+                },
+                {
+                    "type": "p",
+                    "text": "In this bible a skill file is a markdown document in .agent/skills/ that gets injected into the model's context — its prompt — before it answers. It carries design rules, API patterns, your naming conventions, security checklists. The model's weights never change; you are handing it a reference sheet it reads on the spot. That is the entire reason this bible runs on skill files: they are instant to write, free to change, and require zero training. They are rung one from the previous lesson — pure context."
+                },
+                {
+                    "type": "h2",
+                    "text": "What a LoRA actually is (quick recap)"
+                },
+                {
+                    "type": "p",
+                    "text": "A LoRA is a small set of trained weights that gets fused onto the model so the behaviour is part of the model itself. There is no document for it to read — the knowledge lives in the weights. You pay the cost once, during training, and after that it runs with nothing extra in the prompt. That single difference — read every time versus learned once — is where every other trade-off comes from."
+                },
+                {
+                    "type": "h2",
+                    "text": "The head-to-head"
+                },
+                {
+                    "type": "ul",
+                    "items": [
+                        "How it works — Skill file: extra text in the prompt the model re-reads each call. LoRA: extra weights merged into the model.",
+                        "Setup cost — Skill file: write a markdown file, done in minutes. LoRA: gather a dataset, train on a GPU, convert formats.",
+                        "Changing it — Skill file: edit the file, live instantly. LoRA: retrain to change the behaviour.",
+                        "Runtime cost — Skill file: eats context-window tokens on every single call, so more skills means a bigger, slower, pricier prompt. LoRA: zero context cost — the knowledge is in the weights, not the prompt.",
+                        "Facts — Skill file: excellent, it reads the exact current fact verbatim. LoRA: poor, it learns style and fuzzes specific facts.",
+                        "Deep, consistent style — Skill file: okay but can drift over a long output. LoRA: excellent and rock-steady across thousands of calls.",
+                        "Portability — Skill file: works on any model or provider instantly. LoRA: tied to the one base model it was trained on.",
+                        "What it is — Skill file: plain text in your repo you can read and diff. LoRA: a binary weights file."
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "skull",
+                    "text": "The token-cost point is the one people miss. Every skill file you load is re-sent to the model on every message. Stack twenty fat skill files and you pay for that giant prompt over and over while crowding the context window. A LoRA pays its cost once at training time, then runs lean forever. That is often the real reason to graduate a heavy, stable skill file into a LoRA."
+                },
+                {
+                    "type": "h2",
+                    "text": "When to reach for which"
+                },
+                {
+                    "type": "ul",
+                    "items": [
+                        "Use a skill file when the rules change often, you need exact facts, you want it to work across different models, or you are still figuring out what 'good' looks like. This is ninety percent of the time — start here.",
+                        "Use a LoRA when the behaviour is stable and you have hundreds of clean examples, you need ironclad consistency, your skill-file prompt has bloated into something you resent re-sending every call, or you want a small local model to nail one narrow job cheaply."
+                    ]
+                },
+                {
+                    "type": "callout",
+                    "variant": "fire",
+                    "text": "They are not rivals — the best local setups use both. Bake the deep, stable stuff (your house voice, your code style) into a LoRA so it is always on and costs no tokens. Keep the fast-moving stuff (today's rules, current facts, the task at hand) in skill files the model reads fresh. A LoRA is who the model IS. Skill files are what it needs to KNOW right now."
+                },
+                {
+                    "type": "h3",
+                    "text": "The one-line rule"
+                },
+                {
+                    "type": "p",
+                    "text": "If you would be annoyed to retrain every time it changes, it belongs in a skill file. If you are tired of pasting the same instructions on every single call and you have the examples to prove what good looks like, it is time for a LoRA."
+                }
+            ]
+        },
+        {
+            "id": "46",
             "slug": "how-a-lora-works-under-the-hood",
-            "title": "45. How a LoRA Works Under the Hood",
+            "title": "46. How a LoRA Works Under the Hood",
             "blocks": [
                 {
                     "type": "p",
@@ -203,9 +281,9 @@ export const category: Category = {
             ]
         },
         {
-            "id": "46",
+            "id": "47",
             "slug": "what-you-need-to-train-a-lora",
-            "title": "46. What You Need to Train a LoRA",
+            "title": "47. What You Need to Train a LoRA",
             "blocks": [
                 {
                     "type": "p",
@@ -288,9 +366,9 @@ export const category: Category = {
             ]
         },
         {
-            "id": "47",
+            "id": "48",
             "slug": "training-your-first-lora",
-            "title": "47. Training Your First LoRA (Step by Step)",
+            "title": "48. Training Your First LoRA (Step by Step)",
             "blocks": [
                 {
                     "type": "p",
@@ -302,7 +380,7 @@ export const category: Category = {
                 },
                 {
                     "type": "p",
-                    "text": "You start from an existing instruct model. Loading it in 4-bit (the QLoRA trick from the last lesson) is what keeps it inside a small GPU's memory."
+                    "text": "You start from an existing instruct model. Loading it in 4-bit (the QLoRA trick from the 'How a LoRA Works' lesson) is what keeps it inside a small GPU's memory."
                 },
                 {
                     "type": "code",
@@ -315,7 +393,7 @@ export const category: Category = {
                 },
                 {
                     "type": "p",
-                    "text": "Here is where the dials from lesson 45 show up. You wrap the frozen base model with trainable adapters on the attention and feed-forward projections."
+                    "text": "Here is where the dials from the 'How a LoRA Works' lesson show up. You wrap the frozen base model with trainable adapters on the attention and feed-forward projections."
                 },
                 {
                     "type": "code",
@@ -382,9 +460,9 @@ export const category: Category = {
             ]
         },
         {
-            "id": "48",
+            "id": "49",
             "slug": "using-your-lora-with-local-agents",
-            "title": "48. Using Your LoRA With Local Agents",
+            "title": "49. Using Your LoRA With Local Agents",
             "blocks": [
                 {
                     "type": "p",
@@ -456,9 +534,9 @@ export const category: Category = {
             ]
         },
         {
-            "id": "49",
+            "id": "50",
             "slug": "lora-pitfalls-and-best-practices",
-            "title": "49. LoRA Pitfalls & Best Practices",
+            "title": "50. LoRA Pitfalls & Best Practices",
             "blocks": [
                 {
                     "type": "p",

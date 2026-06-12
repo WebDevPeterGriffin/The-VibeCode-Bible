@@ -60,7 +60,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to explore
 - **Vibe Coding Is Dead** — why pure vibe coding failed at scale and what replaced it
 - **Agentic Engineering** — you are the governor, the AI is the workforce
 - **Agent Harness Engineering** — the layer that controls what the model sees, what tools it uses, and when it stops. Covers the anatomy of a harness, building your first one from scratch, and running harnesses in production with observability and cost control
-- **Fine-Tuning & LoRAs** — a full 7-lesson deep dive on teaching local models new behaviour. Starts dead simple (what a LoRA even is) and builds to training your own with Unsloth and running it in Ollama with your agent
+- **Fine-Tuning & LoRAs** — a full 8-lesson deep dive on teaching local models new behaviour. Starts dead simple (what a LoRA even is, and how it differs from a skill file) and builds to training your own with Unsloth and running it in Ollama with your agent
 
 **Advanced & Scale**
 - **Claude Opus 4.7 Updates** — extended thinking, new tokenizer, effort parameter, /ultrareview
